@@ -209,7 +209,7 @@ def recommend_design_v2(
         )
 
     # continuous endpoint
-    if (
+    elif (
         "hba1c" in text
         or "blood pressure" in text
         or "ldl" in text
@@ -224,11 +224,10 @@ def recommend_design_v2(
         )
 
     # survival endpoint
-    if (
+    elif (
         "overall survival" in text
-        or "os" in text
-        or "pfs" in text
-        or "dfs" in text
+        or "progression-free survival" in text
+        or "disease-free survival" in text
         or "time to event" in text
     ):
         endpoint_type = "survival"
