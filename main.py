@@ -5,7 +5,13 @@ from pydantic import BaseModel
 from statsmodels.stats.power import TTestIndPower, NormalIndPower
 from statsmodels.stats.proportion import proportion_effectsize
 
-app = FastAPI()
+app = FastAPI(
+    servers=[
+        {
+            "url": "https://clinicaltrialapi-dqml.onrender.com"
+        }
+    ]
+)
 
 
 # =========================
