@@ -138,6 +138,20 @@ class StudyConceptRequest(BaseModel):
 
     study_description: str
 
+class DesignDiscussionResponse(BaseModel):
+
+    research_question: str
+
+    similar_trials: list[str] = []
+
+    endpoint_options: list[dict] = []
+
+    common_endpoint_types: list[str] = []
+
+    common_sample_size_methods: list[str] = []
+
+    recommendation: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -741,6 +755,101 @@ def calculate_survival_noninferiority(
         "protocol_justification":
             justification
     }
+
+@app.post(
+    "/orchestrator/design-discussion",
+    response_model=DesignDiscussionResponse
+)
+def design_discussion(
+    req: DesignDiscussionRequest
+):
+
+    text = req.research_question.lower()
+
+    similar_trials = []
+
+    endpoint_options = []
+
+    common_endpoint_types = []
+
+    common_sample_size_methods = []
+
+    recommendation = None
+
+    # HBV functional cure example
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "stop therapy" in text
+        or "stop treatment" in text
+    ):
+
+        similar_trials = [
+            "FINITE",
+            "Nuc-STOP",
+            "HBV-STOP"
+        ]
+
+        endpoint_options = [
+
+            {
+                "endpoint":
+                    "HBsAg loss at Week 96",
+
+                "endpoint_type":
+                    "binary",
+
+                "sample_size_method":
+                    "two-proportion superiority"
+            },
+
+            {
+                "endpoint":
+                    "Time to HBsAg loss",
+
+                "endpoint_type":
+                    "survival",
+
+                "sample_size_method":
+                    "log-rank test"
+            }
+        ]
+
+        common_endpoint_types = [
+            "binary",
+            "survival"
+        ]
+
+        common_sample_size_methods = [
+            "two-proportion superiority",
+            "log-rank test"
+        ]
+
+        recommendation = (
+            "Time to HBsAg loss"
+        )
+
+    return DesignDiscussionResponse(
+
+        research_question=
+            req.research_question,
+
+        similar_trials=
+            similar_trials,
+
+        endpoint_options=
+            endpoint_options,
+
+        common_endpoint_types=
+            common_endpoint_types,
+
+        common_sample_size_methods=
+            common_sample_size_methods,
+
+        recommendation=
+            recommendation
+    )
 
 @app.post(
     "/orchestrator/study-concept",
