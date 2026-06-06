@@ -141,6 +141,7 @@ def root():
 def recommend_design(req: DesignRecommendRequest):
 
     text = req.study_description.lower()
+    print("INPUT:", text)
 
     binary_keywords = [
         "response",
@@ -821,6 +822,14 @@ def orchestrate_study_concept(
         analysis_method = (
             "cox proportional hazards"
         )
+    print(
+        "DEBUG:",
+        disease,
+        population,
+        intervention,
+        comparator,
+        primary_endpoint
+)
 
    return TrialSpecification(
 
