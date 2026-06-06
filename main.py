@@ -120,6 +120,8 @@ class TrialSpecification(BaseModel):
 
     recommended_sap_api: str | None = None
 
+    recommended_estimand_api: str | None = None
+
     alpha: float = 0.05
 
     power: float = 0.80
@@ -773,6 +775,8 @@ def orchestrate_study_concept(
 
     recommended_sap_api = None
 
+    recommended_estimand_api = None
+
     # -------------------------
     # Study Design
     # -------------------------
@@ -841,6 +845,10 @@ def orchestrate_study_concept(
             "/sap/statistical-analysis-plan"
         )
 
+        recommended_estimand_api = (
+            "/protocol/estimand"
+        )
+
     elif "hba1c" in text:
 
         primary_endpoint = (
@@ -867,6 +875,10 @@ def orchestrate_study_concept(
 
         recommended_sap_api = (
             "/sap/statistical-analysis-plan"
+        )
+
+        recommended_estimand_api = (
+            "/protocol/estimand"
         )
 
     elif (
@@ -898,6 +910,10 @@ def orchestrate_study_concept(
 
         recommended_sap_api = (
             "/sap/statistical-analysis-plan"
+        )
+
+        recommended_estimand_api = (
+            "/protocol/estimand"
         )
 
     print(
@@ -935,5 +951,7 @@ def orchestrate_study_concept(
 
         recommended_protocol_api=recommended_protocol_api,
 
-        recommended_sap_api=recommended_sap_api
+        recommended_sap_api=recommended_sap_api,
+
+        recommended_estimand_api=recommended_estimand_api
     )
