@@ -4,3 +4,4 @@ statsmodels
 scipy
 numpy
 pydantic
+requests
