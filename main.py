@@ -538,6 +538,22 @@ class InterimAnalysisV2Request(BaseModel):
 
     follow_up_years: float
 
+# =========================
+# Interim Analysis V3
+# =========================
+
+class InterimAnalysisV3Request(BaseModel):
+
+    study_design: str
+
+    endpoint_type: str
+
+    sample_size: int
+
+    follow_up_years: float
+
+    event_driven: bool = False
+
 class InterimAnalysisResponse(BaseModel):
 
     interim_analysis_recommended: bool
@@ -559,6 +575,24 @@ class InterimAnalysisV2Response(BaseModel):
     futility_analysis: bool
 
     dsmb_required: bool
+
+    recommendation: str
+
+class InterimAnalysisV3Response(BaseModel):
+
+    information_fraction: str
+
+    alpha_spending_strategy: str
+
+    event_trigger: str
+
+    futility_rule: str
+
+    early_success_rule: str
+
+    dsmb_required: bool
+
+    dsmb_meeting_frequency: str
 
     recommendation: str
 
@@ -3152,6 +3186,87 @@ def interim_analysis_v2(
 
         recommendation=
             "One interim analysis at 50% information fraction is recommended."
+    )
+
+# =========================
+# Interim Analysis V3
+# =========================
+
+@app.post(
+    "/orchestrator/interim-analysis-v3",
+    response_model=InterimAnalysisV3Response
+)
+def interim_analysis_v3(
+    req: InterimAnalysisV3Request
+):
+
+    alpha_spending_strategy = (
+        "O'Brien-Fleming"
+    )
+
+    if req.sample_size >= 1000:
+
+        alpha_spending_strategy = (
+            "Lan-DeMets"
+        )
+
+    event_trigger = (
+        "50% information fraction"
+    )
+
+    if req.event_driven:
+
+        event_trigger = (
+            "100 events"
+        )
+
+    futility_rule = (
+        "Review conditional efficacy trend at interim analysis."
+    )
+
+    early_success_rule = (
+        "Early stopping permitted if efficacy boundary crossed."
+    )
+
+    dsmb_required = (
+        req.sample_size >= 300
+        or
+        req.endpoint_type.lower() == "survival"
+    )
+
+    dsmb_meeting_frequency = (
+        "Every 6 months"
+    )
+
+    recommendation = (
+        "Interim monitoring strategy should be prespecified in the protocol and SAP."
+    )
+
+    return InterimAnalysisV3Response(
+
+        information_fraction=
+            "50%",
+
+        alpha_spending_strategy=
+            alpha_spending_strategy,
+
+        event_trigger=
+            event_trigger,
+
+        futility_rule=
+            futility_rule,
+
+        early_success_rule=
+            early_success_rule,
+
+        dsmb_required=
+            dsmb_required,
+
+        dsmb_meeting_frequency=
+            dsmb_meeting_frequency,
+
+        recommendation=
+            recommendation
     )
 
 @app.post(
