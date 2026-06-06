@@ -454,6 +454,70 @@ class StatisticalConsequenceResponse(BaseModel):
 
     recommendation: str
 
+class TrialLandscapeRequest(BaseModel):
+
+    research_question: str
+
+class TrialLandscapeResponse(BaseModel):
+
+    research_question: str
+
+    similar_trials: list[str] = []
+
+    ongoing_trials: list[str] = []
+
+    completed_trials: list[str] = []
+
+    key_design_patterns: list[str] = []
+
+    recommendation: str | None = None
+
+class UnmetNeedResponse(BaseModel):
+
+    research_question: str
+
+    evidence_gap: str | None = None
+
+    clinical_gap: str | None = None
+
+    geographic_gap: str | None = None
+
+    implementation_gap: str | None = None
+
+    recommendation: str | None = None
+
+class DesignPatternResponse(BaseModel):
+
+    research_question: str
+
+    common_designs: list[str] = []
+
+    common_endpoints: list[str] = []
+
+    common_followup: list[str] = []
+
+    common_analysis_methods: list[str] = []
+
+    common_sample_size_methods: list[str] = []
+
+    recommendation: str | None = None
+
+class EndpointIntelligenceResponse(BaseModel):
+
+    research_question: str
+
+    common_endpoints: list[str] = []
+
+    endpoint_frequency: dict = {}
+
+    control_rate_range: str | None = None
+
+    event_rate_range: str | None = None
+
+    effect_size_range: str | None = None
+
+    recommendation: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2528,4 +2592,223 @@ def statistical_consequence(
         comparison=comparison,
         recommendation=
             "Use survival endpoints when timing is clinically important."
+    )
+
+@app.post(
+    "/orchestrator/trial-landscape",
+    response_model=TrialLandscapeResponse
+)
+def trial_landscape(
+    req: TrialLandscapeRequest
+):
+
+    text = req.research_question.lower()
+
+    similar_trials = []
+
+    ongoing_trials = []
+
+    completed_trials = []
+
+    patterns = []
+
+    recommendation = None
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "na withdrawal" in text
+    ):
+
+        similar_trials = [
+            "FINITE",
+            "HBV-STOP",
+            "Nuc-STOP"
+        ]
+
+        completed_trials = similar_trials
+
+        patterns = [
+            "off-treatment follow-up",
+            "functional cure endpoint",
+            "relapse monitoring"
+        ]
+
+        recommendation = (
+            "Several analogous HBV withdrawal studies exist."
+        )
+
+    return TrialLandscapeResponse(
+        research_question=req.research_question,
+        similar_trials=similar_trials,
+        ongoing_trials=ongoing_trials,
+        completed_trials=completed_trials,
+        key_design_patterns=patterns,
+        recommendation=recommendation
+    )
+
+@app.post(
+    "/orchestrator/unmet-need",
+    response_model=UnmetNeedResponse
+)
+def unmet_need(
+    req: TrialLandscapeRequest
+):
+
+    text = req.research_question.lower()
+
+    evidence_gap = None
+    clinical_gap = None
+    geographic_gap = None
+    implementation_gap = None
+    recommendation = None
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+    ):
+
+        evidence_gap = (
+            "Limited randomized evidence exists."
+        )
+
+        clinical_gap = (
+            "Functional cure remains uncommon."
+        )
+
+        geographic_gap = (
+            "Asian data remain limited."
+        )
+
+        implementation_gap = (
+            "Optimal patient selection remains unclear."
+        )
+
+        recommendation = (
+            "Additional studies remain justified."
+        )
+
+    return UnmetNeedResponse(
+        research_question=req.research_question,
+        evidence_gap=evidence_gap,
+        clinical_gap=clinical_gap,
+        geographic_gap=geographic_gap,
+        implementation_gap=implementation_gap,
+        recommendation=recommendation
+    )
+
+@app.post(
+    "/orchestrator/design-patterns",
+    response_model=DesignPatternResponse
+)
+def design_patterns(
+    req: TrialLandscapeRequest
+):
+
+    text = req.research_question.lower()
+
+    designs = []
+    endpoints = []
+    followup = []
+    analyses = []
+    sample_size_methods = []
+    recommendation = None
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+    ):
+
+        designs = [
+            "single arm",
+            "randomized trial"
+        ]
+
+        endpoints = [
+            "HBsAg loss",
+            "Time to HBsAg loss"
+        ]
+
+        followup = [
+            "48 weeks",
+            "96 weeks",
+            "144 weeks"
+        ]
+
+        analyses = [
+            "logistic regression",
+            "cox regression"
+        ]
+
+        sample_size_methods = [
+            "two-proportion superiority",
+            "log-rank test"
+        ]
+
+        recommendation = (
+            "Binary and survival endpoint strategies are both commonly used."
+        )
+
+    return DesignPatternResponse(
+        research_question=req.research_question,
+        common_designs=designs,
+        common_endpoints=endpoints,
+        common_followup=followup,
+        common_analysis_methods=analyses,
+        common_sample_size_methods=sample_size_methods,
+        recommendation=recommendation
+    )
+
+@app.post(
+    "/orchestrator/endpoint-intelligence",
+    response_model=EndpointIntelligenceResponse
+)
+def endpoint_intelligence(
+    req: TrialLandscapeRequest
+):
+
+    text = req.research_question.lower()
+
+    endpoints = []
+
+    endpoint_frequency = {}
+
+    control_rate_range = None
+
+    event_rate_range = None
+
+    effect_size_range = None
+
+    recommendation = None
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+    ):
+
+        endpoints = [
+            "HBsAg loss",
+            "Time to HBsAg loss"
+        ]
+
+        endpoint_frequency = {
+            "HBsAg loss": 80,
+            "Time to HBsAg loss": 20
+        }
+
+        control_rate_range = "4%-13%"
+
+        effect_size_range = "5%-10%"
+
+        recommendation = (
+            "HBsAg loss remains the most commonly used endpoint."
+        )
+
+    return EndpointIntelligenceResponse(
+        research_question=req.research_question,
+        common_endpoints=endpoints,
+        endpoint_frequency=endpoint_frequency,
+        control_rate_range=control_rate_range,
+        effect_size_range=effect_size_range,
+        recommendation=recommendation
     )
