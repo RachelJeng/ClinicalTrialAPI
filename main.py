@@ -728,7 +728,10 @@ def calculate_survival_noninferiority(
             justification
     }
 
-@app.post("/orchestrator/study-concept")
+@app.post(
+    "/orchestrator/study-concept",
+    response_model=TrialSpecification
+)
 def orchestrate_study_concept(
     req: StudyConceptRequest
 ):
