@@ -2,6 +2,7 @@ from scipy.stats import norm
 from math import log
 from fastapi import FastAPI
 from pydantic import BaseModel
+import requests
 from statsmodels.stats.power import TTestIndPower, NormalIndPower
 from statsmodels.stats.proportion import proportion_effectsize
 
@@ -12,8 +13,55 @@ app = FastAPI(
         }
     ]
 )
+def search_clinicaltrials(
+    query: str
+):
 
+    try:
 
+        url = (
+            "https://clinicaltrials.gov/api/query/study_fields"
+        )
+
+        params = {
+            "expr": query,
+            "fields": "NCTId,BriefTitle",
+            "min_rnk": 1,
+            "max_rnk": 5,
+            "fmt": "json"
+        }
+
+        response = requests.get(
+            url,
+            params=params,
+            timeout=20
+        )
+
+        data = response.json()
+
+        studies = (
+            data["StudyFieldsResponse"]
+            ["StudyFields"]
+        )
+
+        results = []
+
+        for study in studies:
+
+            title = (
+                study["BriefTitle"][0]
+                if study["BriefTitle"]
+                else "Unknown"
+            )
+
+            results.append(title)
+
+        return results
+
+    except Exception:
+
+        return []
+    
 # =========================
 # Request Models
 # =========================
@@ -1052,11 +1100,9 @@ def evidence_review(
             "Published Protocols"
         ]
 
-        similar_trials = [
-            "FINITE",
-            "Nuc-STOP",
-            "HBV-STOP"
-        ]
+        similar_trials = search_clinicaltrials(
+            "functional cure hepatitis b"
+)
 
         similar_publications = [
             "FINITE publication",
