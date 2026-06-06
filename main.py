@@ -651,6 +651,26 @@ class REDCapBuilderResponse(BaseModel):
 
     variable_definitions: list = []
 
+# =========================
+# REDCap Builder V3
+# =========================
+
+class REDCapBuilderV3Request(BaseModel):
+
+    disease: str
+
+    intervention: str
+
+    primary_endpoint: str
+
+
+class REDCapBuilderV3Response(BaseModel):
+
+    visit_schedule: list[str] = []
+
+    forms: list = []
+
+    variable_metadata: list = []
 
 class BrochureRequest(BaseModel):
 
@@ -3414,6 +3434,156 @@ def redcap_builder_v2(
 
         variable_definitions=
             variables
+    )
+
+# =========================
+# REDCap Builder V3
+# =========================
+
+@app.post(
+    "/orchestrator/redcap-builder-v3",
+    response_model=REDCapBuilderV3Response
+)
+def redcap_builder_v3(
+    req: REDCapBuilderV3Request
+):
+
+    visit_schedule = [
+
+        "Screening",
+
+        "Baseline",
+
+        "Week 4",
+
+        "Week 12",
+
+        "Week 24",
+
+        "Week 48",
+
+        "Week 96"
+    ]
+
+    forms = [
+
+        {
+            "form_name":
+                "Screening"
+        },
+
+        {
+            "form_name":
+                "Baseline"
+        },
+
+        {
+            "form_name":
+                "Follow-up"
+        },
+
+        {
+            "form_name":
+                "Safety"
+        },
+
+        {
+            "form_name":
+                "Endpoint"
+        }
+    ]
+
+    variable_metadata = [
+
+        {
+            "visit":
+                "Baseline",
+
+            "form_name":
+                "Baseline",
+
+            "field_name":
+                "age",
+
+            "field_label":
+                "Age at Enrollment",
+
+            "field_type":
+                "number",
+
+            "required":
+                True,
+
+            "validation":
+                "integer",
+
+            "choices":
+                ""
+        },
+
+        {
+            "visit":
+                "Baseline",
+
+            "form_name":
+                "Baseline",
+
+            "field_name":
+                "sex",
+
+            "field_label":
+                "Sex",
+
+            "field_type":
+                "radio",
+
+            "required":
+                True,
+
+            "validation":
+                "",
+
+            "choices":
+                "1,Male | 2,Female"
+        },
+
+        {
+            "visit":
+                "Week 96",
+
+            "form_name":
+                "Endpoint",
+
+            "field_name":
+                "primary_endpoint",
+
+            "field_label":
+                req.primary_endpoint,
+
+            "field_type":
+                "text",
+
+            "required":
+                True,
+
+            "validation":
+                "",
+
+            "choices":
+                ""
+        }
+    ]
+
+    return REDCapBuilderV3Response(
+
+        visit_schedule=
+            visit_schedule,
+
+        forms=
+            forms,
+
+        variable_metadata=
+            variable_metadata
     )
 
 @app.post(
