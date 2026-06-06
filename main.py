@@ -528,6 +528,15 @@ class InterimAnalysisRequest(BaseModel):
 
     follow_up_years: float = 1.0
 
+class InterimAnalysisV2Request(BaseModel):
+
+    study_design: str
+
+    endpoint_type: str
+
+    sample_size: int
+
+    follow_up_years: float
 
 class InterimAnalysisResponse(BaseModel):
 
@@ -540,6 +549,18 @@ class InterimAnalysisResponse(BaseModel):
     stopping_boundary: str | None = None
 
     rationale: str | None = None
+
+class InterimAnalysisV2Response(BaseModel):
+
+    information_fraction: str
+
+    stopping_boundary: str
+
+    futility_analysis: bool
+
+    dsmb_required: bool
+
+    recommendation: str
 
 class ClinicalTrialsGovRequest(BaseModel):
 
@@ -603,6 +624,14 @@ class CRFBuilderRequest(BaseModel):
 
     primary_endpoint: str
 
+class REDCapBuilderRequest(BaseModel):
+
+    disease: str
+
+    intervention: str
+
+    primary_endpoint: str
+
 class CRFBuilderResponse(BaseModel):
 
     screening_fields: list[str] = []
@@ -614,6 +643,14 @@ class CRFBuilderResponse(BaseModel):
     safety_fields: list[str] = []
 
     endpoint_fields: list[str] = []
+
+
+class REDCapBuilderResponse(BaseModel):
+
+    form_name: str
+
+    variable_definitions: list = []
+
 
 class BrochureRequest(BaseModel):
 
@@ -657,6 +694,10 @@ class TTERequest(BaseModel):
 
     research_question: str
 
+class TTEV2Request(BaseModel):
+
+    research_question: str
+
 class TTEResponse(BaseModel):
 
     eligibility_criteria: str
@@ -671,6 +712,21 @@ class TTEResponse(BaseModel):
 
     recommended_method: str
 
+class TTEV2Response(BaseModel):
+
+    eligibility_criteria: str
+
+    time_zero: str
+
+    treatment_strategy: str
+
+    follow_up: str
+
+    causal_contrast: str
+
+    recommended_method: str
+
+    sensitivity_analysis: str
 
 # =========================
 # Root Endpoint
@@ -3049,6 +3105,36 @@ def interim_analysis(
     )
 
 @app.post(
+    "/orchestrator/interim-analysis-v2",
+    response_model=InterimAnalysisV2Response
+)
+def interim_analysis_v2(
+    req: InterimAnalysisV2Request
+):
+
+    return InterimAnalysisV2Response(
+
+        information_fraction=
+            "50%",
+
+        stopping_boundary=
+            "O'Brien-Fleming",
+
+        futility_analysis=
+            True,
+
+        dsmb_required=
+            (
+                req.sample_size >= 300
+                or
+                req.endpoint_type.lower() == "survival"
+            ),
+
+        recommendation=
+            "One interim analysis at 50% information fraction is recommended."
+    )
+
+@app.post(
     "/orchestrator/clinicaltrialsgov-package",
     response_model=ClinicalTrialsGovResponse
 )
@@ -3279,6 +3365,58 @@ def crf_builder(
     )
 
 @app.post(
+    "/orchestrator/redcap-builder-v2",
+    response_model=REDCapBuilderResponse
+)
+def redcap_builder_v2(
+    req: REDCapBuilderRequest
+):
+
+    variables = [
+
+        {
+            "field_name":
+                "subject_id",
+
+            "field_type":
+                "text"
+        },
+
+        {
+            "field_name":
+                "visit_date",
+
+            "field_type":
+                "date"
+        },
+
+        {
+            "field_name":
+                "adverse_event",
+
+            "field_type":
+                "yesno"
+        },
+
+        {
+            "field_name":
+                "primary_endpoint",
+
+            "field_type":
+                "text"
+        }
+    ]
+
+    return REDCapBuilderResponse(
+
+        form_name=
+            f"{req.disease} Study CRF",
+
+        variable_definitions=
+            variables
+    )
+
+@app.post(
     "/orchestrator/brochure-generator",
     response_model=BrochureResponse
 )
@@ -3476,4 +3614,36 @@ def tte_design(
 
         recommended_method=
             recommended_method
+    )
+
+@app.post(
+    "/orchestrator/tte-design-v2",
+    response_model=TTEV2Response
+)
+def tte_design_v2(
+    req: TTEV2Request
+):
+
+    return TTEV2Response(
+
+        eligibility_criteria=
+            "Patients meeting target trial eligibility criteria.",
+
+        time_zero=
+            "Date of treatment strategy assignment.",
+
+        treatment_strategy=
+            "Treatment versus comparator.",
+
+        follow_up=
+            "Until endpoint occurrence or censoring.",
+
+        causal_contrast=
+            "Average treatment effect.",
+
+        recommended_method=
+            "IPTW",
+
+        sensitivity_analysis=
+            "Marginal Structural Model"
     )
