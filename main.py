@@ -184,7 +184,13 @@ class EvidenceReviewResponse(BaseModel):
 
     research_question: str
 
+    evidence_sources: list[str] = []
+
     similar_trials: list[str] = []
+
+    similar_publications: list[str] = []
+
+    similar_protocols: list[str] = []
 
     common_endpoints: list[str] = []
 
@@ -1009,7 +1015,13 @@ def evidence_review(
 
     text = req.research_question.lower()
 
+    evidence_sources = []
+
     similar_trials = []
+
+    similar_publications = []
+
+    similar_protocols = []
 
     common_endpoints = []
 
@@ -1034,10 +1046,25 @@ def evidence_review(
         or "stop treatment" in text
     ):
 
+        evidence_sources = [
+            "ClinicalTrials.gov",
+            "PubMed",
+            "Published Protocols"
+        ]
+
         similar_trials = [
             "FINITE",
             "Nuc-STOP",
             "HBV-STOP"
+        ]
+
+        similar_publications = [
+            "FINITE publication",
+            "HBV-STOP publication"
+        ]
+
+        similar_protocols = [
+            "FINITE protocol"
         ]
 
         common_endpoints = [
@@ -1090,8 +1117,17 @@ def evidence_review(
         research_question=
             req.research_question,
 
+        evidence_sources=
+            evidence_sources,
+
         similar_trials=
             similar_trials,
+
+        similar_publications=
+            similar_publications,
+
+        similar_protocols=
+            similar_protocols,
 
         common_endpoints=
             common_endpoints,
