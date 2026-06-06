@@ -116,6 +116,10 @@ class TrialSpecification(BaseModel):
 
     recommended_sample_size_api: str | None = None
 
+    recommended_protocol_api: str | None = None
+
+    recommended_sap_api: str | None = None
+
     alpha: float = 0.05
 
     power: float = 0.80
@@ -765,6 +769,10 @@ def orchestrate_study_concept(
 
     recommended_sample_size_api = None
 
+    recommended_protocol_api = None
+
+    recommended_sap_api = None
+
     # -------------------------
     # Study Design
     # -------------------------
@@ -825,6 +833,14 @@ def orchestrate_study_concept(
             "/sample-size/proportion"
         )
 
+        recommended_protocol_api = (
+            "/protocol/endpoints"
+        )
+
+        recommended_sap_api = (
+            "/sap/statistical-analysis-plan"
+        )
+
     elif "hba1c" in text:
 
         primary_endpoint = (
@@ -843,6 +859,14 @@ def orchestrate_study_concept(
 
         recommended_sample_size_api = (
             "/sample-size/ttest"
+        )
+
+        recommended_protocol_api = (
+            "/protocol/endpoints"
+        )
+
+        recommended_sap_api = (
+            "/sap/statistical-analysis-plan"
         )
 
     elif (
@@ -866,6 +890,14 @@ def orchestrate_study_concept(
 
         recommended_sample_size_api = (
             "/sample-size/survival"
+        )
+
+        recommended_protocol_api = (
+            "/protocol/endpoints"
+        )
+
+        recommended_sap_api = (
+            "/sap/statistical-analysis-plan"
         )
 
     print(
@@ -899,5 +931,9 @@ def orchestrate_study_concept(
 
         sample_size_method=sample_size_method,
 
-        recommended_sample_size_api=recommended_sample_size_api
+        recommended_sample_size_api=recommended_sample_size_api,
+
+        recommended_protocol_api=recommended_protocol_api,
+
+        recommended_sap_api=recommended_sap_api
     )
