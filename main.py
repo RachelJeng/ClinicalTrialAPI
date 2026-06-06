@@ -122,6 +122,14 @@ class TrialSpecification(BaseModel):
 
     recommended_estimand_api: str | None = None
 
+    similar_trials: list[str] = []
+
+    endpoint_strategy_summary: str | None = None
+
+    recommended_endpoint_type: str | None = None
+
+    required_sample_size_inputs: list[str] = []
+
     alpha: float = 0.05
 
     power: float = 0.80
@@ -777,6 +785,14 @@ def orchestrate_study_concept(
 
     recommended_estimand_api = None
 
+    similar_trials = []
+
+    endpoint_strategy_summary = None
+
+    recommended_endpoint_type = None
+
+    required_sample_size_inputs = []
+
     # -------------------------
     # Study Design
     # -------------------------
@@ -849,6 +865,26 @@ def orchestrate_study_concept(
             "/protocol/estimand"
         )
 
+        similar_trials = [
+            "FINITE",
+            "Nuc-STOP",
+            "HBV-STOP"
+        ]
+
+        endpoint_strategy_summary = (
+            "Binary endpoint strategy commonly used "
+            "for functional cure studies."
+        )
+
+        recommended_endpoint_type = "binary"
+
+        required_sample_size_inputs = [
+            "p1",
+            "p2",
+            "alpha",
+            "power"
+        ]
+
     elif "hba1c" in text:
 
         primary_endpoint = (
@@ -880,6 +916,19 @@ def orchestrate_study_concept(
         recommended_estimand_api = (
             "/protocol/estimand"
         )
+
+        endpoint_strategy_summary = (
+            "Continuous endpoint strategy commonly "
+            "used for metabolic outcome studies."
+        )
+
+        recommended_endpoint_type = "continuous"
+
+        required_sample_size_inputs = [
+            "effect_size",
+            "alpha",
+            "power"
+        ]
 
     elif (
         "overall survival" in text
@@ -915,6 +964,19 @@ def orchestrate_study_concept(
         recommended_estimand_api = (
             "/protocol/estimand"
         )
+
+        endpoint_strategy_summary = (
+            "Time-to-event endpoint strategy "
+            "recommended when timing is clinically important."
+        )
+
+        recommended_endpoint_type = "survival"
+
+        required_sample_size_inputs = [
+            "hazard_ratio",
+            "alpha",
+            "power"
+        ]
 
     print(
         "DEBUG:",
@@ -953,5 +1015,13 @@ def orchestrate_study_concept(
 
         recommended_sap_api=recommended_sap_api,
 
-        recommended_estimand_api=recommended_estimand_api
-    )
+        recommended_estimand_api=recommended_estimand_api,
+
+        similar_trials=similar_trials,
+
+        endpoint_strategy_summary=endpoint_strategy_summary,
+
+        recommended_endpoint_type=recommended_endpoint_type,
+
+        required_sample_size_inputs=required_sample_size_inputs
+        )
