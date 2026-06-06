@@ -752,6 +752,15 @@ class TTEV2Request(BaseModel):
 
     research_question: str
 
+# =========================
+# TTE V3
+# =========================
+
+class TTEV3Request(BaseModel):
+
+    research_question: str
+
+
 class TTEResponse(BaseModel):
 
     eligibility_criteria: str
@@ -781,6 +790,30 @@ class TTEV2Response(BaseModel):
     recommended_method: str
 
     sensitivity_analysis: str
+
+class TTEV3Response(BaseModel):
+
+    eligibility_criteria: str
+
+    time_zero: str
+
+    treatment_strategy: str
+
+    follow_up: str
+
+    causal_contrast: str
+
+    recommended_method: str
+
+    cloning_censoring_weighting: bool
+
+    positivity_diagnostics: str
+
+    weight_diagnostics: str
+
+    sequential_exchangeability: str
+
+    target_trial_bias_report: list[str] = []
 
 # =========================
 # Root Endpoint
@@ -3931,4 +3964,63 @@ def tte_design_v2(
 
         sensitivity_analysis=
             "Marginal Structural Model"
+    )
+
+# =========================
+# TTE V3
+# =========================
+
+@app.post(
+    "/orchestrator/tte-design-v3",
+    response_model=TTEV3Response
+)
+def tte_design_v3(
+    req: TTEV3Request
+):
+
+    bias_report = [
+
+        "Immortal Time Bias Risk: Review time-zero definition.",
+
+        "Residual Confounding Risk: Evaluate measured and unmeasured confounders.",
+
+        "Selection Bias Risk: Assess inclusion criteria.",
+
+        "Measurement Bias Risk: Verify outcome ascertainment."
+    ]
+
+    return TTEV3Response(
+
+        eligibility_criteria=
+            "Patients meeting target trial eligibility criteria.",
+
+        time_zero=
+            "Date of treatment strategy assignment.",
+
+        treatment_strategy=
+            "Treatment versus comparator.",
+
+        follow_up=
+            "Until endpoint occurrence or censoring.",
+
+        causal_contrast=
+            "Average treatment effect.",
+
+        recommended_method=
+            "IPTW with Marginal Structural Model",
+
+        cloning_censoring_weighting=
+            True,
+
+        positivity_diagnostics=
+            "Propensity score overlap assessment recommended.",
+
+        weight_diagnostics=
+            "Evaluate extreme weights and stabilized weights.",
+
+        sequential_exchangeability=
+            "Assess exchangeability assumptions at each decision point.",
+
+        target_trial_bias_report=
+            bias_report
     )
