@@ -148,7 +148,7 @@ class DesignDiscussionResponse(BaseModel):
 
     similar_trials: list[str] = []
 
-    endpoint_options: list[dict] = []
+    endpoint_options: list = []
 
     common_endpoint_types: list[str] = []
 
