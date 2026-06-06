@@ -138,9 +138,11 @@ class StudyConceptRequest(BaseModel):
 
     study_description: str
 
+
 class DesignDiscussionRequest(BaseModel):
 
     research_question: str
+
 
 class DesignDiscussionResponse(BaseModel):
 
@@ -149,6 +151,24 @@ class DesignDiscussionResponse(BaseModel):
     similar_trials: list[str] = []
 
     endpoint_options: list = []
+
+    common_endpoint_types: list[str] = []
+
+    common_sample_size_methods: list[str] = []
+
+    recommendation: str | None = None
+
+
+class AnalogousTrialRequest(BaseModel):
+
+    research_question: str
+
+
+class AnalogousTrialResponse(BaseModel):
+
+    research_question: str
+
+    similar_trials: list[str] = []
 
     common_endpoint_types: list[str] = []
 
@@ -844,6 +864,104 @@ def design_discussion(
 
         endpoint_options=
             endpoint_options,
+
+        common_endpoint_types=
+            common_endpoint_types,
+
+        common_sample_size_methods=
+            common_sample_size_methods,
+
+        recommendation=
+            recommendation
+    )
+
+@app.post(
+    "/orchestrator/analogous-trials",
+    response_model=AnalogousTrialResponse
+)
+def analogous_trials(
+    req: AnalogousTrialRequest
+):
+
+    text = req.research_question.lower()
+
+    similar_trials = []
+
+    common_endpoint_types = []
+
+    common_sample_size_methods = []
+
+    recommendation = None
+
+    # HBV functional cure
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "stop therapy" in text
+        or "stop treatment" in text
+        or "na withdrawal" in text
+    ):
+
+        similar_trials = [
+            "FINITE",
+            "Nuc-STOP",
+            "HBV-STOP"
+        ]
+
+        common_endpoint_types = [
+            "binary",
+            "survival"
+        ]
+
+        common_sample_size_methods = [
+            "two-proportion superiority",
+            "log-rank test"
+        ]
+
+        recommendation = (
+            "Most analogous trials used "
+            "binary endpoints. "
+            "Survival endpoints may be preferred "
+            "when timing of functional cure is "
+            "clinically important."
+        )
+
+    # Metabolic disease
+
+    elif (
+        "hba1c" in text
+        or "diabetes" in text
+        or "obesity" in text
+        or "weight loss" in text
+    ):
+
+        similar_trials = [
+            "STEP",
+            "SURPASS"
+        ]
+
+        common_endpoint_types = [
+            "continuous"
+        ]
+
+        common_sample_size_methods = [
+            "two-sample t-test",
+            "ANCOVA"
+        ]
+
+        recommendation = (
+            "Continuous endpoints are commonly "
+            "used in metabolic disease studies."
+        )
+
+    return AnalogousTrialResponse(
+
+        research_question=
+            req.research_question,
+
+        similar_trials=
+            similar_trials,
 
         common_endpoint_types=
             common_endpoint_types,
