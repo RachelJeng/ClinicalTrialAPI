@@ -192,6 +192,12 @@ class EvidenceReviewResponse(BaseModel):
 
     common_sample_size_methods: list[str] = []
 
+    design_patterns: list[str] = []
+
+    strengths: list[str] = []
+
+    limitations: list[str] = []
+
     evidence_summary: str | None = None
 
     recommendation: str | None = None
@@ -1011,6 +1017,12 @@ def evidence_review(
 
     common_sample_size_methods = []
 
+    design_patterns = []
+
+    strengths = []
+
+    limitations = []
+
     evidence_summary = None
 
     recommendation = None
@@ -1043,6 +1055,24 @@ def evidence_review(
             "Log-rank test"
         ]
 
+        design_patterns = [
+            "Fixed follow-up endpoint assessment",
+            "Off-treatment observation period",
+            "Functional cure endpoint strategy"
+        ]
+
+        strengths = [
+            "Clinically meaningful endpoint",
+            "Simple interpretation",
+            "Commonly used in HBV studies"
+        ]
+
+        limitations = [
+            "Functional cure events are rare",
+            "Long follow-up required",
+            "Endpoint timing may be ignored"
+        ]
+
         evidence_summary = (
             "Most published HBV withdrawal studies "
             "used binary functional cure endpoints. "
@@ -1071,6 +1101,15 @@ def evidence_review(
 
         common_sample_size_methods=
             common_sample_size_methods,
+
+        design_patterns=
+            design_patterns,
+
+        strengths=
+            strengths,
+
+        limitations=
+            limitations,
 
         evidence_summary=
             evidence_summary,
