@@ -269,6 +269,23 @@ class EvidenceReviewResponse(BaseModel):
 
     recommendation: str | None = None
 
+class QueryIntelligenceRequest(BaseModel):
+
+    research_question: str
+
+
+class QueryIntelligenceResponse(BaseModel):
+
+    research_question: str
+
+    disease: str | None = None
+
+    intervention: str | None = None
+
+    outcome: str | None = None
+
+    search_terms: list[str] = []
+
 # =========================
 # Root Endpoint
 # =========================
@@ -1216,6 +1233,62 @@ def evidence_review(
 
         recommendation=
             recommendation
+    )
+
+@app.post(
+    "/orchestrator/query-intelligence",
+    response_model=QueryIntelligenceResponse
+)
+def query_intelligence(
+    req: QueryIntelligenceRequest
+):
+
+    text = req.research_question.lower()
+
+    disease = None
+
+    intervention = None
+
+    outcome = None
+
+    search_terms = []
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "stop therapy" in text
+        or "stop treatment" in text
+    ):
+
+        disease = "chronic hepatitis b"
+
+        intervention = "NA withdrawal"
+
+        outcome = "functional cure"
+
+        search_terms = [
+            "hepatitis b withdrawal",
+            "nucleos(t)ide discontinuation",
+            "hbsag loss",
+            "functional cure"
+        ]
+
+    return QueryIntelligenceResponse(
+
+        research_question=
+            req.research_question,
+
+        disease=
+            disease,
+
+        intervention=
+            intervention,
+
+        outcome=
+            outcome,
+
+        search_terms=
+            search_terms
     )
 
 @app.post(
