@@ -1100,9 +1100,14 @@ def evidence_review(
             "Published Protocols"
         ]
 
+        query = "hepatitis b"
+
+        if "functional cure" in text:
+            query = "hbsag loss hepatitis b"
+
         similar_trials = search_clinicaltrials(
-            "functional cure hepatitis b"
-)
+            query
+        )
 
         similar_publications = [
             "FINITE publication",
