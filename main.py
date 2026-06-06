@@ -738,6 +738,16 @@ def orchestrate_study_concept(
     analysis_method = "manual_review"
     estimand = "treatment_policy"
 
+    disease = None
+
+    population = None
+
+    intervention = None
+
+    comparator = None
+
+    primary_endpoint = None
+
     # randomized trial
     if (
         "randomized" in text
@@ -745,6 +755,26 @@ def orchestrate_study_concept(
         or "rct" in text
     ):
         design = "parallel-group RCT"
+
+    if "masld" in text:
+
+        disease = "MASLD"
+
+        population = "MASLD patients"
+
+    if "semaglutide" in text:
+
+        intervention = "semaglutide"
+
+    if "standard care" in text:
+
+        comparator = "standard care"
+
+    if "fibrosis improvement" in text:
+
+        primary_endpoint = (
+            "fibrosis improvement at week 48"
+    )
 
     # binary endpoint
     if (
@@ -792,10 +822,25 @@ def orchestrate_study_concept(
             "cox proportional hazards"
         )
 
-    return TrialSpecification(
-        study_design=design,
-        endpoint_type=endpoint_type,
-        estimand=estimand,
-        analysis_method=analysis_method,
-        sample_size_method=sample_size_method
-    )
+   return TrialSpecification(
+
+       study_design=design,
+
+       disease=disease,
+
+       population=population,
+
+       intervention=intervention,
+
+       comparator=comparator,
+
+       primary_endpoint=primary_endpoint,
+
+       endpoint_type=endpoint_type,
+
+       estimand=estimand,
+
+       analysis_method=analysis_method,
+
+       sample_size_method=sample_size_method
+)
