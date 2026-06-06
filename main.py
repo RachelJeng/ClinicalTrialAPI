@@ -571,6 +571,42 @@ class ClinicalTrialsGovResponse(BaseModel):
 
     eligibility_criteria: str
 
+class CRFBuilderRequest(BaseModel):
+
+    disease: str
+
+    intervention: str
+
+    primary_endpoint: str
+
+class CRFBuilderResponse(BaseModel):
+
+    screening_fields: list[str] = []
+
+    baseline_fields: list[str] = []
+
+    followup_fields: list[str] = []
+
+    safety_fields: list[str] = []
+
+    endpoint_fields: list[str] = []
+
+class BrochureRequest(BaseModel):
+
+    disease: str
+
+    intervention: str
+
+    study_rationale: str
+
+class BrochureResponse(BaseModel):
+
+    scientific_rationale: str
+
+    unmet_need: str
+
+    expected_impact: str
+
 # =========================
 # Root Endpoint
 # =========================
@@ -3009,4 +3045,122 @@ def clinicaltrialsgov_package(
 
         eligibility_criteria=
             eligibility_criteria
+    )
+
+@app.post(
+    "/orchestrator/crf-builder",
+    response_model=CRFBuilderResponse
+)
+def crf_builder(
+    req: CRFBuilderRequest
+):
+
+    screening_fields = [
+
+        "Informed Consent",
+
+        "Eligibility Assessment",
+
+        "Medical History"
+    ]
+
+    baseline_fields = [
+
+        "Age",
+
+        "Sex",
+
+        "Disease Duration",
+
+        "Baseline Laboratory Values"
+    ]
+
+    followup_fields = [
+
+        "Visit Date",
+
+        "Medication Adherence",
+
+        "Laboratory Assessments"
+    ]
+
+    safety_fields = [
+
+        "Adverse Events",
+
+        "Serious Adverse Events",
+
+        "Treatment Discontinuation"
+    ]
+
+    endpoint_fields = [
+
+        req.primary_endpoint
+    ]
+
+    return CRFBuilderResponse(
+
+        screening_fields=
+            screening_fields,
+
+        baseline_fields=
+            baseline_fields,
+
+        followup_fields=
+            followup_fields,
+
+        safety_fields=
+            safety_fields,
+
+        endpoint_fields=
+            endpoint_fields
+    )
+
+@app.post(
+    "/orchestrator/brochure-generator",
+    response_model=BrochureResponse
+)
+def brochure_generator(
+    req: BrochureRequest
+):
+
+    scientific_rationale = (
+
+        f"{req.intervention} "
+
+        f"may improve outcomes in "
+
+        f"{req.disease}. "
+
+        f"{req.study_rationale}"
+    )
+
+    unmet_need = (
+
+        f"Current treatment strategies "
+
+        f"for {req.disease} remain "
+
+        f"suboptimal."
+    )
+
+    expected_impact = (
+
+        f"The study may provide evidence "
+
+        f"supporting future clinical "
+
+        f"management of {req.disease}."
+    )
+
+    return BrochureResponse(
+
+        scientific_rationale=
+            scientific_rationale,
+
+        unmet_need=
+            unmet_need,
+
+        expected_impact=
+            expected_impact
     )
