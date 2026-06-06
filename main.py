@@ -300,6 +300,19 @@ class ResearchQuestionResponse(BaseModel):
 
     recommended_trial_specification: dict
 
+class DesignTradeoffRequest(BaseModel):
+
+    research_question: str
+
+
+class DesignTradeoffResponse(BaseModel):
+
+    research_question: str
+
+    options: list = []
+
+    recommendation: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -1414,6 +1427,104 @@ def research_question(
             recommended_trial_specification
     )
 
+@app.post(
+    "/orchestrator/design-tradeoff",
+    response_model=DesignTradeoffResponse
+)
+def design_tradeoff(
+    req: DesignTradeoffRequest
+):
+
+    text = req.research_question.lower()
+
+    options = []
+
+    recommendation = None
+
+    # Relapse example
+
+    if (
+        "relapse" in text
+        or "recurrence" in text
+    ):
+
+        options = [
+
+            {
+                "endpoint":
+                    "Relapse by Month 6",
+
+                "endpoint_type":
+                    "binary",
+
+                "advantages": [
+                    "Simple interpretation",
+                    "Easy sample size calculation",
+                    "Common clinical trial design"
+                ],
+
+                "disadvantages": [
+                    "Ignores timing information",
+                    "Day 7 and Day 180 relapse are treated equally"
+                ],
+
+                "statistical_efficiency":
+                    "moderate",
+
+                "operational_feasibility":
+                    "high",
+
+                "sample_size_impact":
+                    "often larger sample size"
+            },
+
+            {
+                "endpoint":
+                    "Time to relapse",
+
+                "endpoint_type":
+                    "survival",
+
+                "advantages": [
+                    "Uses timing information",
+                    "More efficient use of events",
+                    "Clinically informative"
+                ],
+
+                "disadvantages": [
+                    "More complex assumptions",
+                    "Requires survival analysis expertise"
+                ],
+
+                "statistical_efficiency":
+                    "high",
+
+                "operational_feasibility":
+                    "moderate",
+
+                "sample_size_impact":
+                    "often lower event requirement"
+            }
+        ]
+
+        recommendation = (
+            "If the key question is whether relapse occurs, "
+            "use a binary endpoint. "
+            "If timing of relapse is clinically important, "
+            "use a survival endpoint."
+        )
+
+    return DesignTradeoffResponse(
+
+        research_question=
+            req.research_question,
+
+        options=
+            options,
+
+        recommendation=
+            recommendation
+    )
 
 @app.post(
     "/orchestrator/study-concept",
