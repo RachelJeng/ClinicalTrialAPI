@@ -730,7 +730,72 @@ def orchestrate_study_concept(
     req: StudyConceptRequest
 ):
 
-    return {
-        "message":
-            "Orchestrator placeholder"
-    }
+    text = req.study_description.lower()
+
+    design = "unknown"
+    endpoint_type = "unknown"
+    sample_size_method = "manual_review"
+    analysis_method = "manual_review"
+    estimand = "treatment_policy"
+
+    # randomized trial
+    if (
+        "randomized" in text
+        or "randomised" in text
+        or "rct" in text
+    ):
+        design = "parallel-group RCT"
+
+    # binary endpoint
+    if (
+        "response" in text
+        or "orr" in text
+        or "remission" in text
+        or "cure" in text
+        or "fibrosis improvement" in text
+    ):
+        endpoint_type = "binary"
+        sample_size_method = (
+            "two-proportion superiority"
+        )
+        analysis_method = (
+            "logistic regression"
+        )
+
+    # continuous endpoint
+    elif (
+        "hba1c" in text
+        or "blood pressure" in text
+        or "ldl" in text
+        or "weight" in text
+    ):
+        endpoint_type = "continuous"
+        sample_size_method = (
+            "two-sample t-test"
+        )
+        analysis_method = (
+            "ancova"
+        )
+
+    # survival endpoint
+    elif (
+        "overall survival" in text
+        or "progression-free survival" in text
+        or "disease-free survival" in text
+        or "time to event" in text
+    ):
+        endpoint_type = "survival"
+        sample_size_method = (
+            "log-rank test"
+        )
+        analysis_method = (
+            "cox proportional hazards"
+        )
+
+    return TrialSpecification(
+        study_design=design,
+        endpoint_type=endpoint_type,
+        estimand=estimand,
+        analysis_method=analysis_method,
+        sample_size_method=sample_size_method
+    )
