@@ -138,6 +138,10 @@ class StudyConceptRequest(BaseModel):
 
     study_description: str
 
+class DesignDiscussionRequest(BaseModel):
+
+    research_question: str
+
 class DesignDiscussionResponse(BaseModel):
 
     research_question: str
