@@ -528,6 +528,7 @@ class InterimAnalysisRequest(BaseModel):
 
     follow_up_years: float = 1.0
 
+
 class InterimAnalysisResponse(BaseModel):
 
     interim_analysis_recommended: bool
@@ -2839,3 +2840,79 @@ def endpoint_intelligence(
     "/orchestrator/interim-analysis",
     response_model=InterimAnalysisResponse
 )
+def interim_analysis(
+    req: InterimAnalysisRequest
+):
+
+    interim_analysis_recommended = False
+
+    dsmb_recommended = False
+
+    recommended_interims = 0
+
+    stopping_boundary = None
+
+    # -------------------------
+    # Interim Analysis Logic
+    # -------------------------
+
+    if (
+        req.sample_size >= 300
+        or req.endpoint_type.lower() == "survival"
+        or req.follow_up_years >= 2
+    ):
+
+        interim_analysis_recommended = True
+
+        recommended_interims = 1
+
+        stopping_boundary = "O'Brien-Fleming"
+
+    # -------------------------
+    # DSMB Recommendation
+    # -------------------------
+
+    if (
+        req.endpoint_type.lower() == "survival"
+        or req.sample_size >= 500
+    ):
+
+        dsmb_recommended = True
+
+    # -------------------------
+    # Additional Rules
+    # -------------------------
+
+    if (
+        req.sample_size >= 1000
+    ):
+
+        recommended_interims = 2
+
+    # -------------------------
+    # Rationale
+    # -------------------------
+
+    rationale = (
+        "Large sample size, survival endpoints, "
+        "or prolonged follow-up may justify "
+        "interim monitoring and DSMB oversight."
+    )
+
+    return InterimAnalysisResponse(
+
+        interim_analysis_recommended=
+            interim_analysis_recommended,
+
+        dsmb_recommended=
+            dsmb_recommended,
+
+        recommended_interims=
+            recommended_interims,
+
+        stopping_boundary=
+            stopping_boundary,
+
+        rationale=
+            rationale
+    )
