@@ -313,6 +313,27 @@ class DesignTradeoffResponse(BaseModel):
 
     recommendation: str | None = None
 
+class FeasibilityRequest(BaseModel):
+
+    sample_size: int
+
+    annual_eligible_patients: int
+
+    consent_rate: float = 0.5
+
+    number_of_sites: int = 1
+
+
+class FeasibilityResponse(BaseModel):
+
+    estimated_recruitment_rate: float
+
+    estimated_accrual_years: float
+
+    feasibility_rating: str
+
+    recommendation: str
+
 # =========================
 # Root Endpoint
 # =========================
@@ -1521,6 +1542,76 @@ def design_tradeoff(
 
         options=
             options,
+
+        recommendation=
+            recommendation
+    )
+
+@app.post(
+    "/orchestrator/feasibility-analysis",
+    response_model=FeasibilityResponse
+)
+def feasibility_analysis(
+    req: FeasibilityRequest
+):
+
+    estimated_recruitment_rate = (
+        req.annual_eligible_patients
+        * req.consent_rate
+        * req.number_of_sites
+    )
+
+    if estimated_recruitment_rate == 0:
+
+        estimated_accrual_years = 999
+
+    else:
+
+        estimated_accrual_years = (
+            req.sample_size
+            / estimated_recruitment_rate
+        )
+
+    if estimated_accrual_years <= 2:
+
+        feasibility_rating = "excellent"
+
+        recommendation = (
+            "Recruitment appears highly feasible."
+        )
+
+    elif estimated_accrual_years <= 5:
+
+        feasibility_rating = "moderate"
+
+        recommendation = (
+            "Recruitment is feasible but may "
+            "require careful planning."
+        )
+
+    else:
+
+        feasibility_rating = "poor"
+
+        recommendation = (
+            "Consider multicenter recruitment, "
+            "broader eligibility criteria, "
+            "or alternative endpoints."
+        )
+
+    return FeasibilityResponse(
+
+        estimated_recruitment_rate=
+            estimated_recruitment_rate,
+
+        estimated_accrual_years=
+            round(
+                estimated_accrual_years,
+                2
+            ),
+
+        feasibility_rating=
+            feasibility_rating,
 
         recommendation=
             recommendation
