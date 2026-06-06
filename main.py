@@ -547,11 +547,29 @@ class ClinicalTrialsGovRequest(BaseModel):
 
     disease: str
 
-    intervention: str
-
     population: str
 
+    intervention: str
+
+    comparator: str | None = None
+
     primary_endpoint: str
+
+    study_design: str
+
+class ClinicalTrialsGovResponse(BaseModel):
+
+    brief_title: str
+
+    official_title: str
+
+    brief_summary: str
+
+    detailed_description: str
+
+    primary_outcome_measure: str
+
+    eligibility_criteria: str
 
 # =========================
 # Root Endpoint
@@ -2929,16 +2947,66 @@ def interim_analysis(
             rationale
     )
 
-class ClinicalTrialsGovResponse(BaseModel):
+@app.post(
+    "/orchestrator/clinicaltrialsgov-package",
+    response_model=ClinicalTrialsGovResponse
+)
+def clinicaltrialsgov_package(
+    req: ClinicalTrialsGovRequest
+):
 
-    brief_title: str
+    brief_title = req.study_title
 
-    official_title: str
+    official_title = (
+        f"A {req.study_design} evaluating "
+        f"{req.intervention} in "
+        f"{req.disease}"
+    )
 
-    brief_summary: str
+    brief_summary = (
+        f"This study evaluates "
+        f"{req.intervention} "
+        f"in participants with "
+        f"{req.disease}."
+    )
 
-    detailed_description: str
+    detailed_description = (
+        f"The purpose of this study is to evaluate "
+        f"the efficacy and safety of "
+        f"{req.intervention} "
+        f"in participants with "
+        f"{req.disease}. "
+        f"The primary endpoint is "
+        f"{req.primary_endpoint}."
+    )
 
-    primary_outcome: str
+    primary_outcome_measure = (
+        req.primary_endpoint
+    )
 
-    eligibility_criteria: str
+    eligibility_criteria = (
+        f"Adults with "
+        f"{req.disease} "
+        f"meeting study eligibility criteria."
+    )
+
+    return ClinicalTrialsGovResponse(
+
+        brief_title=
+            brief_title,
+
+        official_title=
+            official_title,
+
+        brief_summary=
+            brief_summary,
+
+        detailed_description=
+            detailed_description,
+
+        primary_outcome_measure=
+            primary_outcome_measure,
+
+        eligibility_criteria=
+            eligibility_criteria
+    )
