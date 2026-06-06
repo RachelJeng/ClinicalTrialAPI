@@ -858,13 +858,25 @@ def orchestrate_study_concept(
         primary_endpoint
     )
 
-    return (
+    return TrialSpecification(
 
-        "study_design": study_design,
-        "disease": disease,
-        "population": population,
-        "intervention": intervention,
-        "comparator": comparator,
-        "primary_endpoint": primary_endpoint,
-        "endpoint_type": endpoint_type
+        study_design=study_design,
+
+        disease=disease,
+
+        population=population,
+
+        intervention=intervention,
+
+        comparator=comparator,
+
+        primary_endpoint=primary_endpoint,
+
+        endpoint_type=endpoint_type,
+
+        estimand=estimand,
+
+        analysis_method=analysis_method,
+
+        sample_size_method=sample_size_method
     )
