@@ -350,6 +350,30 @@ class FeasibilityOptimizationResponse(BaseModel):
 
     optimization_options: list = []
 
+class BudgetRequest(BaseModel):
+
+    sample_size: int
+
+    number_of_sites: int = 1
+
+    follow_up_years: float = 1.0
+
+class BudgetResponse(BaseModel):
+
+    coordinator_cost: float
+
+    crc_cost: float
+
+    lab_cost: float
+
+    monitoring_cost: float
+
+    statistics_cost: float
+
+    publication_cost: float
+
+    estimated_total_budget: float
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2018,3 +2042,73 @@ def feasibility_optimization(
             optimization_options
     )
 
+@app.post(
+    "/orchestrator/budget-estimation",
+    response_model=BudgetResponse
+)
+def budget_estimation(
+    req: BudgetRequest
+):
+
+    coordinator_cost = (
+        50000
+        * req.follow_up_years
+    )
+
+    crc_cost = (
+        req.sample_size
+        * 200
+    )
+
+    lab_cost = (
+        req.sample_size
+        * 500
+    )
+
+    monitoring_cost = (
+        req.number_of_sites
+        * 10000
+    )
+
+    statistics_cost = 25000
+
+    publication_cost = 10000
+
+    estimated_total_budget = (
+
+        coordinator_cost
+
+        + crc_cost
+
+        + lab_cost
+
+        + monitoring_cost
+
+        + statistics_cost
+
+        + publication_cost
+    )
+
+    return BudgetResponse(
+
+        coordinator_cost=
+            coordinator_cost,
+
+        crc_cost=
+            crc_cost,
+
+        lab_cost=
+            lab_cost,
+
+        monitoring_cost=
+            monitoring_cost,
+
+        statistics_cost=
+            statistics_cost,
+
+        publication_cost=
+            publication_cost,
+
+        estimated_total_budget=
+            estimated_total_budget
+    )
