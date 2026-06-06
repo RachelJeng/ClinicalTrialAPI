@@ -88,6 +88,40 @@ class SurvivalNonInferiorityRequest(BaseModel):
     power: float = 0.80
     dropout_rate: float = 0.0
 
+class TrialSpecification(BaseModel):
+
+    study_title: str | None = None
+
+    study_design: str | None = None
+
+    disease: str | None = None
+
+    population: str | None = None
+
+    intervention: str | None = None
+
+    comparator: str | None = None
+
+    primary_endpoint: str | None = None
+
+    secondary_endpoints: list[str] = []
+
+    endpoint_type: str | None = None
+
+    estimand: str | None = None
+
+    analysis_method: str | None = None
+
+    sample_size_method: str | None = None
+
+    alpha: float = 0.05
+
+    power: float = 0.80
+
+class StudyConceptRequest(BaseModel):
+
+    study_description: str
+
 # =========================
 # Root Endpoint
 # =========================
@@ -689,4 +723,14 @@ def calculate_survival_noninferiority(
             round(adjusted_events, 2),
         "protocol_justification":
             justification
+    }
+
+@app.post("/orchestrator/study-concept")
+def orchestrate_study_concept(
+    req: StudyConceptRequest
+):
+
+    return {
+        "message":
+            "Orchestrator placeholder"
     }
