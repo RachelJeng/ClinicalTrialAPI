@@ -386,6 +386,74 @@ class DesignSelectionResponse(BaseModel):
 
     recommendation: str | None = None
 
+class AssumptionAnalysisRequest(BaseModel):
+
+    parameter: str
+
+    assumption: float
+
+    source: str | None = None
+
+class AssumptionAnalysisResponse(BaseModel):
+
+    parameter: str
+
+    assumption: float
+
+    confidence_level: str
+
+    risk_level: str
+
+    optimistic_scenario: float
+
+    expected_scenario: float
+
+    conservative_scenario: float
+
+    recommendation: str
+
+class BiasAnalysisRequest(BaseModel):
+
+    study_design: str
+
+    endpoint_type: str
+
+class BiasAnalysisResponse(BaseModel):
+
+    biases: list = []
+
+    recommendation: str
+
+class MethodologistCritiqueRequest(BaseModel):
+
+    study_design: str
+
+    endpoint_type: str
+
+    sample_size: int | None = None
+
+class MethodologistCritiqueResponse(BaseModel):
+
+    statistician_review: list = []
+
+    irb_review: list = []
+
+    dsmb_review: list = []
+
+    journal_review: list = []
+
+class StatisticalConsequenceRequest(BaseModel):
+
+    option_a: str
+
+    option_b: str
+
+class StatisticalConsequenceResponse(BaseModel):
+
+    comparison: list = []
+
+    recommendation: str
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2251,4 +2319,213 @@ def design_selection(
 
         recommendation=
             recommendation
+    )
+
+@app.post(
+    "/orchestrator/assumption-analysis",
+    response_model=AssumptionAnalysisResponse
+)
+def assumption_analysis(
+    req: AssumptionAnalysisRequest
+):
+
+    confidence = "moderate"
+
+    risk = "moderate"
+
+    optimistic = round(
+        req.assumption * 1.5,
+        4
+    )
+
+    expected = req.assumption
+
+    conservative = round(
+        req.assumption * 0.5,
+        4
+    )
+
+    recommendation = (
+        "Sensitivity analyses should be "
+        "performed using optimistic and "
+        "conservative assumptions."
+    )
+
+    return AssumptionAnalysisResponse(
+        parameter=req.parameter,
+        assumption=req.assumption,
+        confidence_level=confidence,
+        risk_level=risk,
+        optimistic_scenario=optimistic,
+        expected_scenario=expected,
+        conservative_scenario=conservative,
+        recommendation=recommendation
+    )
+
+@app.post(
+    "/orchestrator/bias-analysis",
+    response_model=BiasAnalysisResponse
+)
+def bias_analysis(
+    req: BiasAnalysisRequest
+):
+
+    biases = []
+
+    design = req.study_design.lower()
+
+    if "single" in design:
+
+        biases.extend([
+            {
+                "bias":
+                    "selection bias",
+                "severity":
+                    "high",
+                "mitigation":
+                    "randomized control group"
+            },
+            {
+                "bias":
+                    "historical control bias",
+                "severity":
+                    "high",
+                "mitigation":
+                    "concurrent control"
+            }
+        ])
+
+    elif "rct" in design:
+
+        biases.extend([
+            {
+                "bias":
+                    "attrition bias",
+                "severity":
+                    "moderate",
+                "mitigation":
+                    "retention strategy"
+            }
+        ])
+
+    elif "tte" in design:
+
+        biases.extend([
+            {
+                "bias":
+                    "immortal time bias",
+                "severity":
+                    "high",
+                "mitigation":
+                    "target trial alignment"
+            }
+        ])
+
+    return BiasAnalysisResponse(
+        biases=biases,
+        recommendation=
+            "Bias mitigation strategies should be documented."
+    )
+
+@app.post(
+    "/orchestrator/methodologist-critique",
+    response_model=MethodologistCritiqueResponse
+)
+def methodologist_critique(
+    req: MethodologistCritiqueRequest
+):
+
+    statistician = []
+
+    irb = []
+
+    dsmb = []
+
+    journal = []
+
+    if req.sample_size:
+
+        if req.sample_size < 50:
+
+            statistician.append(
+                "Potentially underpowered study."
+            )
+
+    if req.endpoint_type == "composite":
+
+        journal.append(
+            "Composite endpoint may have limited clinical interpretability."
+        )
+
+    irb.append(
+        "Assess participant burden and visit schedule."
+    )
+
+    dsmb.append(
+        "Review safety monitoring requirements."
+    )
+
+    return MethodologistCritiqueResponse(
+        statistician_review=statistician,
+        irb_review=irb,
+        dsmb_review=dsmb,
+        journal_review=journal
+    )
+
+@app.post(
+    "/orchestrator/statistical-consequence",
+    response_model=StatisticalConsequenceResponse
+)
+def statistical_consequence(
+    req: StatisticalConsequenceRequest
+):
+
+    comparison = []
+
+    if (
+        req.option_a.lower() == "binary"
+        and
+        req.option_b.lower() == "survival"
+    ):
+
+        comparison = [
+
+            {
+                "domain":
+                    "sample_size",
+
+                "binary":
+                    "often larger",
+
+                "survival":
+                    "event-driven"
+            },
+
+            {
+                "domain":
+                    "information",
+
+                "binary":
+                    "timing ignored",
+
+                "survival":
+                    "timing preserved"
+            },
+
+            {
+                "domain":
+                    "analysis",
+
+                "binary":
+                    "logistic regression",
+
+                "survival":
+                    "cox model"
+            }
+        ]
+
+    return StatisticalConsequenceResponse(
+        comparison=comparison,
+        recommendation=
+            "Use survival endpoints when timing is clinically important."
     )
