@@ -518,6 +518,28 @@ class EndpointIntelligenceResponse(BaseModel):
 
     recommendation: str | None = None
 
+class InterimAnalysisRequest(BaseModel):
+
+    study_design: str
+
+    endpoint_type: str
+
+    sample_size: int
+
+    follow_up_years: float = 1.0
+
+class InterimAnalysisResponse(BaseModel):
+
+    interim_analysis_recommended: bool
+
+    dsmb_recommended: bool
+
+    recommended_interims: int
+
+    stopping_boundary: str | None = None
+
+    rationale: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2812,3 +2834,8 @@ def endpoint_intelligence(
         effect_size_range=effect_size_range,
         recommendation=recommendation
     )
+
+@app.post(
+    "/orchestrator/interim-analysis",
+    response_model=InterimAnalysisResponse
+)
