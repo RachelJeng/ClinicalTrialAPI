@@ -732,12 +732,13 @@ def orchestrate_study_concept(
 ):
 
     text = req.study_description.lower()
+    print(text)
 
-    design = "unknown"
-    endpoint_type = "unknown"
-    sample_size_method = "manual_review"
-    analysis_method = "manual_review"
-    estimand = "treatment_policy"
+    # -------------------------
+    # TrialSpecification fields
+    # -------------------------
+
+    study_design = "unknown"
 
     disease = None
 
@@ -749,79 +750,105 @@ def orchestrate_study_concept(
 
     primary_endpoint = None
 
-    # randomized trial
+    endpoint_type = "unknown"
+
+    estimand = "treatment_policy"
+
+    analysis_method = "manual_review"
+
+    sample_size_method = "manual_review"
+
+    # -------------------------
+    # Study Design
+    # -------------------------
+
     if (
         "randomized" in text
         or "randomised" in text
         or "rct" in text
     ):
-        design = "parallel-group RCT"
+        study_design = "parallel-group RCT"
+
+    # -------------------------
+    # Disease
+    # -------------------------
 
     if "masld" in text:
-
         disease = "MASLD"
-
         population = "MASLD patients"
 
-    if "semaglutide" in text:
+    # -------------------------
+    # Intervention
+    # -------------------------
 
+    if "semaglutide" in text:
         intervention = "semaglutide"
 
-    if "standard care" in text:
+    # -------------------------
+    # Comparator
+    # -------------------------
 
+    if "standard care" in text:
         comparator = "standard care"
+
+    if "placebo" in text:
+        comparator = "placebo"
+
+    # -------------------------
+    # Endpoint
+    # -------------------------
 
     if "fibrosis improvement" in text:
 
         primary_endpoint = (
             "fibrosis improvement at week 48"
-    )
-
-    # binary endpoint
-    if (
-        "response" in text
-        or "orr" in text
-        or "remission" in text
-        or "cure" in text
-        or "fibrosis improvement" in text
-    ):
-        endpoint_type = "binary"
-        sample_size_method = (
-            "two-proportion superiority"
         )
+
+        endpoint_type = "binary"
+
         analysis_method = (
             "logistic regression"
         )
 
-    # continuous endpoint
-    elif (
-        "hba1c" in text
-        or "blood pressure" in text
-        or "ldl" in text
-        or "weight" in text
-    ):
+        sample_size_method = (
+            "two-proportion superiority"
+        )
+
+    elif "hba1c" in text:
+
+        primary_endpoint = (
+            "change in HbA1c"
+        )
+
         endpoint_type = "continuous"
+
+        analysis_method = (
+            "ANCOVA"
+        )
+
         sample_size_method = (
             "two-sample t-test"
         )
-        analysis_method = (
-            "ancova"
-        )
 
-    # survival endpoint
     elif (
         "overall survival" in text
         or "progression-free survival" in text
-        or "disease-free survival" in text
-        or "time to event" in text
     ):
-        endpoint_type = "survival"
-        sample_size_method = (
-            "log-rank test"
+
+        primary_endpoint = (
+            "time-to-event endpoint"
         )
+
+        endpoint_type = "survival"
+
         analysis_method = (
             "cox proportional hazards"
         )
+
+        sample_size_method = (
+            "log-rank test"
+        )
+
     print(
         "DEBUG:",
         disease,
@@ -829,27 +856,27 @@ def orchestrate_study_concept(
         intervention,
         comparator,
         primary_endpoint
-)
+    )
 
-   return TrialSpecification(
+    return TrialSpecification(
 
-       study_design=design,
+        study_design=study_design,
 
-       disease=disease,
+        disease=disease,
 
-       population=population,
+        population=population,
 
-       intervention=intervention,
+        intervention=intervention,
 
-       comparator=comparator,
+        comparator=comparator,
 
-       primary_endpoint=primary_endpoint,
+        primary_endpoint=primary_endpoint,
 
-       endpoint_type=endpoint_type,
+        endpoint_type=endpoint_type,
 
-       estimand=estimand,
+        estimand=estimand,
 
-       analysis_method=analysis_method,
+        analysis_method=analysis_method,
 
-       sample_size_method=sample_size_method
-)
+        sample_size_method=sample_size_method
+    )
