@@ -571,6 +571,30 @@ class ClinicalTrialsGovResponse(BaseModel):
 
     eligibility_criteria: str
 
+# =========================
+# ClinicalTrials.gov V2
+# =========================
+
+class ClinicalTrialsGovV2Request(BaseModel):
+
+    trial_specification: TrialSpecification
+
+
+class ClinicalTrialsGovV2Response(BaseModel):
+
+    brief_title: str
+
+    official_title: str
+
+    brief_summary: str
+
+    detailed_description: str
+
+    primary_outcome_measure: str
+
+    eligibility_criteria: str
+
+
 class CRFBuilderRequest(BaseModel):
 
     disease: str
@@ -3083,6 +3107,103 @@ def clinicaltrialsgov_package(
 
         primary_outcome_measure=
             primary_outcome_measure,
+
+        eligibility_criteria=
+            eligibility_criteria
+    )
+
+# =========================
+# ClinicalTrials.gov Package V2
+# =========================
+
+@app.post(
+    "/orchestrator/clinicaltrialsgov-package-v2",
+    response_model=ClinicalTrialsGovV2Response
+)
+def clinicaltrialsgov_package_v2(
+    req: ClinicalTrialsGovV2Request
+):
+
+    spec = req.trial_specification
+
+    disease = (
+        spec.disease
+        if spec.disease
+        else "Target Disease"
+    )
+
+    intervention = (
+        spec.intervention
+        if spec.intervention
+        else "Study Intervention"
+    )
+
+    endpoint = (
+        spec.primary_endpoint
+        if spec.primary_endpoint
+        else "Primary Endpoint"
+    )
+
+    design = (
+        spec.study_design
+        if spec.study_design
+        else "Clinical Trial"
+    )
+
+    brief_title = (
+        f"{intervention} in {disease}"
+    )
+
+    official_title = (
+        f"A {design} Evaluating "
+        f"{intervention} "
+        f"in Participants With "
+        f"{disease}"
+    )
+
+    brief_summary = (
+        f"This study evaluates "
+        f"{intervention} "
+        f"in participants with "
+        f"{disease}. "
+        f"The primary endpoint is "
+        f"{endpoint}."
+    )
+
+    detailed_description = (
+        f"The purpose of this study is to "
+        f"evaluate the efficacy and safety of "
+        f"{intervention} "
+        f"in participants with "
+        f"{disease}. "
+        f"The primary endpoint is "
+        f"{endpoint}. "
+        f"The study design is "
+        f"{design}."
+    )
+
+    eligibility_criteria = (
+        f"Participants with "
+        f"{disease} "
+        f"meeting protocol eligibility criteria."
+    )
+
+    return ClinicalTrialsGovV2Response(
+
+        brief_title=
+            brief_title,
+
+        official_title=
+            official_title,
+
+        brief_summary=
+            brief_summary,
+
+        detailed_description=
+            detailed_description,
+
+        primary_outcome_measure=
+            endpoint,
 
         eligibility_criteria=
             eligibility_criteria
