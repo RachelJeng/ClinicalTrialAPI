@@ -374,6 +374,18 @@ class BudgetResponse(BaseModel):
 
     estimated_total_budget: float
 
+class DesignSelectionRequest(BaseModel):
+
+    research_question: str
+
+class DesignSelectionResponse(BaseModel):
+
+    research_question: str
+
+    options: list = []
+
+    recommendation: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2111,4 +2123,132 @@ def budget_estimation(
 
         estimated_total_budget=
             estimated_total_budget
+    )
+
+@app.post(
+    "/orchestrator/design-selection",
+    response_model=DesignSelectionResponse
+)
+def design_selection(
+    req: DesignSelectionRequest
+):
+
+    text = req.research_question.lower()
+
+    options = []
+
+    recommendation = None
+
+    # Treatment effect question
+
+    if (
+        "improve" in text
+        or "effect" in text
+        or "efficacy" in text
+        or "functional cure" in text
+    ):
+
+        options = [
+
+            {
+                "design":
+                    "Single Arm",
+
+                "advantages": [
+                    "Fast",
+                    "Lower cost"
+                ],
+
+                "disadvantages": [
+                    "No concurrent control group",
+                    "Weak causal inference"
+                ],
+
+                "budget_impact":
+                    "low",
+
+                "publication_value":
+                    "moderate"
+            },
+
+            {
+                "design":
+                    "Randomized Controlled Trial",
+
+                "advantages": [
+                    "Strong causal inference",
+                    "Regulatory familiarity"
+                ],
+
+                "disadvantages": [
+                    "Higher cost",
+                    "Longer recruitment"
+                ],
+
+                "budget_impact":
+                    "high",
+
+                "publication_value":
+                    "high"
+            },
+
+            {
+                "design":
+                    "Pragmatic Clinical Trial",
+
+                "advantages": [
+                    "Real-world relevance",
+                    "Generalizable results"
+                ],
+
+                "disadvantages": [
+                    "Operational complexity"
+                ],
+
+                "budget_impact":
+                    "moderate",
+
+                "publication_value":
+                    "high"
+            },
+
+            {
+                "design":
+                    "Target Trial Emulation",
+
+                "advantages": [
+                    "Uses existing data",
+                    "Lower cost"
+                ],
+
+                "disadvantages": [
+                    "Residual confounding",
+                    "Requires observational data"
+                ],
+
+                "budget_impact":
+                    "low",
+
+                "publication_value":
+                    "moderate"
+            }
+        ]
+
+        recommendation = (
+            "Randomized Controlled Trial "
+            "remains the preferred design "
+            "when causal treatment effect "
+            "estimation is the primary goal."
+        )
+
+    return DesignSelectionResponse(
+
+        research_question=
+            req.research_question,
+
+        options=
+            options,
+
+        recommendation=
+            recommendation
     )
