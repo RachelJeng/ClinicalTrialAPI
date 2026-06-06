@@ -334,6 +334,22 @@ class FeasibilityResponse(BaseModel):
 
     recommendation: str
 
+class FeasibilityOptimizationRequest(BaseModel):
+
+    sample_size: int
+
+    annual_eligible_patients: int
+
+    consent_rate: float = 0.5
+
+    number_of_sites: int = 1
+
+class FeasibilityOptimizationResponse(BaseModel):
+
+    current_accrual_years: float
+
+    optimization_options: list = []
+
 # =========================
 # Root Endpoint
 # =========================
@@ -1900,3 +1916,105 @@ def orchestrate_study_concept(
 
         required_sample_size_inputs=required_sample_size_inputs
         )
+
+@app.post(
+    "/orchestrator/feasibility-optimization",
+    response_model=FeasibilityOptimizationResponse
+)
+def feasibility_optimization(
+    req: FeasibilityOptimizationRequest
+):
+
+    recruitment_rate = (
+        req.annual_eligible_patients
+        * req.consent_rate
+        * req.number_of_sites
+    )
+
+    if recruitment_rate == 0:
+
+        current_accrual_years = 999
+
+    else:
+
+        current_accrual_years = (
+            req.sample_size
+            / recruitment_rate
+        )
+
+    optimization_options = []
+
+    # Increase sites
+
+    optimization_options.append({
+
+        "strategy":
+            "Increase to 5 sites",
+
+        "estimated_accrual_years":
+            round(
+                current_accrual_years / 5,
+                2
+            )
+    })
+
+    optimization_options.append({
+
+        "strategy":
+            "Increase to 10 sites",
+
+        "estimated_accrual_years":
+            round(
+                current_accrual_years / 10,
+                2
+            )
+    })
+
+    # Improve consent
+
+    improved_rate = (
+        req.annual_eligible_patients
+        * 0.8
+        * req.number_of_sites
+    )
+
+    optimization_options.append({
+
+        "strategy":
+            "Improve consent rate to 80%",
+
+        "estimated_accrual_years":
+            round(
+                req.sample_size
+                / improved_rate,
+                2
+            )
+    })
+
+    # Reduce sample size
+
+    optimization_options.append({
+
+        "strategy":
+            "Reduce sample size by 30% through alternative endpoint strategy",
+
+        "estimated_accrual_years":
+            round(
+                (req.sample_size * 0.7)
+                / recruitment_rate,
+                2
+            )
+    })
+
+    return FeasibilityOptimizationResponse(
+
+        current_accrual_years=
+            round(
+                current_accrual_years,
+                2
+            ),
+
+        optimization_options=
+            optimization_options
+    )
+
