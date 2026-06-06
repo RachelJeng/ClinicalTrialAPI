@@ -541,6 +541,18 @@ class InterimAnalysisResponse(BaseModel):
 
     rationale: str | None = None
 
+class ClinicalTrialsGovRequest(BaseModel):
+
+    study_title: str
+
+    disease: str
+
+    intervention: str
+
+    population: str
+
+    primary_endpoint: str
+
 # =========================
 # Root Endpoint
 # =========================
@@ -2916,3 +2928,17 @@ def interim_analysis(
         rationale=
             rationale
     )
+
+class ClinicalTrialsGovResponse(BaseModel):
+
+    brief_title: str
+
+    official_title: str
+
+    brief_summary: str
+
+    detailed_description: str
+
+    primary_outcome: str
+
+    eligibility_criteria: str
