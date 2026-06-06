@@ -286,6 +286,20 @@ class QueryIntelligenceResponse(BaseModel):
 
     search_terms: list[str] = []
 
+class ResearchQuestionRequest(BaseModel):
+
+    research_question: str
+
+class ResearchQuestionResponse(BaseModel):
+
+    query_intelligence: dict
+
+    evidence_review: dict
+
+    design_discussion: dict
+
+    recommended_trial_specification: dict
+
 # =========================
 # Root Endpoint
 # =========================
@@ -1290,6 +1304,116 @@ def query_intelligence(
         search_terms=
             search_terms
     )
+
+@app.post(
+    "/orchestrator/research-question",
+    response_model=ResearchQuestionResponse
+)
+def research_question(
+    req: ResearchQuestionRequest
+):
+
+    text = req.research_question.lower()
+
+    # ------------------
+    # Query Intelligence
+    # ------------------
+
+    disease = None
+
+    intervention = None
+
+    outcome = None
+
+    search_terms = []
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "stop therapy" in text
+        or "stop treatment" in text
+    ):
+
+        disease = "chronic hepatitis b"
+
+        intervention = "NA withdrawal"
+
+        outcome = "functional cure"
+
+        search_terms = [
+            "hepatitis b withdrawal",
+            "nucleos(t)ide discontinuation",
+            "hbsag loss",
+            "functional cure"
+        ]
+
+    query_intelligence = {
+        "disease": disease,
+        "intervention": intervention,
+        "outcome": outcome,
+        "search_terms": search_terms
+    }
+
+    # ------------------
+    # Evidence Review
+    # ------------------
+
+    similar_trials = search_clinicaltrials(
+        "hepatitis b"
+    )
+
+    evidence_review = {
+        "similar_trials": similar_trials
+    }
+
+    # ------------------
+    # Design Discussion
+    # ------------------
+
+    design_discussion = {
+        "recommended_endpoint":
+            "Time to HBsAg loss",
+
+        "endpoint_options": [
+            "HBsAg loss at Week 96",
+            "Time to HBsAg loss"
+        ]
+    }
+
+    # ------------------
+    # Trial Specification
+    # ------------------
+
+    recommended_trial_specification = {
+
+        "study_design":
+            "parallel-group RCT",
+
+        "endpoint_type":
+            "survival",
+
+        "analysis_method":
+            "cox proportional hazards",
+
+        "sample_size_method":
+            "log-rank test"
+    }
+
+    return ResearchQuestionResponse(
+
+        query_intelligence=
+            query_intelligence,
+
+        evidence_review=
+            evidence_review,
+
+        design_discussion=
+            design_discussion,
+
+        recommended_trial_specification=
+            recommended_trial_specification
+    )
+
 
 @app.post(
     "/orchestrator/study-concept",
