@@ -114,6 +114,8 @@ class TrialSpecification(BaseModel):
 
     sample_size_method: str | None = None
 
+    recommended_sample_size_api: str | None = None
+
     alpha: float = 0.05
 
     power: float = 0.80
@@ -758,6 +760,8 @@ def orchestrate_study_concept(
 
     sample_size_method = "manual_review"
 
+    recommended_sample_size_api = None
+
     # -------------------------
     # Study Design
     # -------------------------
@@ -814,6 +818,10 @@ def orchestrate_study_concept(
             "two-proportion superiority"
         )
 
+        recommended_sample_size_api = (
+            "/sample-size/proportion"
+        )
+
     elif "hba1c" in text:
 
         primary_endpoint = (
@@ -828,6 +836,10 @@ def orchestrate_study_concept(
 
         sample_size_method = (
             "two-sample t-test"
+        )
+
+        recommended_sample_size_api = (
+            "/sample-size/ttest"
         )
 
     elif (
@@ -847,6 +859,10 @@ def orchestrate_study_concept(
 
         sample_size_method = (
             "log-rank test"
+        )
+
+        recommended_sample_size_api = (
+            "/sample-size/survival"
         )
 
     print(
@@ -878,5 +894,7 @@ def orchestrate_study_concept(
 
         analysis_method=analysis_method,
 
-        sample_size_method=sample_size_method
+        sample_size_method=sample_size_method,
+
+        recommended_sample_size_api=recommended_sample_size_api
     )
