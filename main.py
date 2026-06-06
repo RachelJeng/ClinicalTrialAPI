@@ -176,6 +176,26 @@ class AnalogousTrialResponse(BaseModel):
 
     recommendation: str | None = None
 
+class EvidenceReviewRequest(BaseModel):
+
+    research_question: str
+
+class EvidenceReviewResponse(BaseModel):
+
+    research_question: str
+
+    similar_trials: list[str] = []
+
+    common_endpoints: list[str] = []
+
+    common_analysis_methods: list[str] = []
+
+    common_sample_size_methods: list[str] = []
+
+    evidence_summary: str | None = None
+
+    recommendation: str | None = None
+
 # =========================
 # Root Endpoint
 # =========================
@@ -968,6 +988,92 @@ def analogous_trials(
 
         common_sample_size_methods=
             common_sample_size_methods,
+
+        recommendation=
+            recommendation
+    )
+
+@app.post(
+    "/orchestrator/evidence-review",
+    response_model=EvidenceReviewResponse
+)
+def evidence_review(
+    req: EvidenceReviewRequest
+):
+
+    text = req.research_question.lower()
+
+    similar_trials = []
+
+    common_endpoints = []
+
+    common_analysis_methods = []
+
+    common_sample_size_methods = []
+
+    evidence_summary = None
+
+    recommendation = None
+
+    if (
+        "functional cure" in text
+        or "hbsag loss" in text
+        or "stop therapy" in text
+        or "stop treatment" in text
+    ):
+
+        similar_trials = [
+            "FINITE",
+            "Nuc-STOP",
+            "HBV-STOP"
+        ]
+
+        common_endpoints = [
+            "HBsAg loss at fixed timepoint",
+            "Time to HBsAg loss"
+        ]
+
+        common_analysis_methods = [
+            "Logistic regression",
+            "Cox proportional hazards"
+        ]
+
+        common_sample_size_methods = [
+            "Two-proportion superiority",
+            "Log-rank test"
+        ]
+
+        evidence_summary = (
+            "Most published HBV withdrawal studies "
+            "used binary functional cure endpoints. "
+            "A smaller number used time-to-event "
+            "approaches."
+        )
+
+        recommendation = (
+            "Consider both binary and survival "
+            "endpoint strategies."
+        )
+
+    return EvidenceReviewResponse(
+
+        research_question=
+            req.research_question,
+
+        similar_trials=
+            similar_trials,
+
+        common_endpoints=
+            common_endpoints,
+
+        common_analysis_methods=
+            common_analysis_methods,
+
+        common_sample_size_methods=
+            common_sample_size_methods,
+
+        evidence_summary=
+            evidence_summary,
 
         recommendation=
             recommendation
