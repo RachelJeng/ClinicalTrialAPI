@@ -607,6 +607,47 @@ class BrochureResponse(BaseModel):
 
     expected_impact: str
 
+class AdvancedSAPRequest(BaseModel):
+
+    endpoint_type: str
+
+    endpoint_name: str
+
+class AdvancedSAPResponse(BaseModel):
+
+    analysis_population: str
+
+    primary_analysis: str
+
+    multiplicity_strategy: str
+
+    covariate_adjustment: list[str] = []
+
+    subgroup_analysis: list[str] = []
+
+    missing_data_strategy: str
+
+    sensitivity_analysis: list[str] = []
+
+class TTERequest(BaseModel):
+
+    research_question: str
+
+class TTEResponse(BaseModel):
+
+    eligibility_criteria: str
+
+    time_zero: str
+
+    treatment_strategy: str
+
+    follow_up: str
+
+    causal_contrast: str
+
+    recommended_method: str
+
+
 # =========================
 # Root Endpoint
 # =========================
@@ -3163,4 +3204,155 @@ def brochure_generator(
 
         expected_impact=
             expected_impact
+    )
+
+@app.post(
+    "/orchestrator/advanced-sap",
+    response_model=AdvancedSAPResponse
+)
+def advanced_sap(
+    req: AdvancedSAPRequest
+):
+
+    endpoint_type = req.endpoint_type.lower()
+
+    analysis_population = (
+        "Intention-to-Treat"
+    )
+
+    multiplicity_strategy = (
+        "Hierarchical Testing"
+    )
+
+    covariate_adjustment = [
+        "Age",
+        "Sex",
+        "Baseline Disease Severity"
+    ]
+
+    subgroup_analysis = [
+        "Age Group",
+        "Sex",
+        "Disease Severity"
+    ]
+
+    missing_data_strategy = (
+        "Multiple Imputation"
+    )
+
+    sensitivity_analysis = [
+        "Per Protocol Analysis",
+        "Worst Case Analysis"
+    ]
+
+    if endpoint_type == "binary":
+
+        primary_analysis = (
+            "Logistic Regression"
+        )
+
+    elif endpoint_type == "continuous":
+
+        primary_analysis = (
+            "ANCOVA"
+        )
+
+    elif endpoint_type == "survival":
+
+        primary_analysis = (
+            "Cox Proportional Hazards Model"
+        )
+
+    else:
+
+        primary_analysis = (
+            "Manual Review"
+        )
+
+    return AdvancedSAPResponse(
+
+        analysis_population=
+            analysis_population,
+
+        primary_analysis=
+            primary_analysis,
+
+        multiplicity_strategy=
+            multiplicity_strategy,
+
+        covariate_adjustment=
+            covariate_adjustment,
+
+        subgroup_analysis=
+            subgroup_analysis,
+
+        missing_data_strategy=
+            missing_data_strategy,
+
+        sensitivity_analysis=
+            sensitivity_analysis
+    )
+
+@app.post(
+    "/orchestrator/tte-design",
+    response_model=TTEResponse
+)
+def tte_design(
+    req: TTERequest
+):
+
+    text = req.research_question.lower()
+
+    eligibility_criteria = (
+        "Patients meeting study eligibility criteria."
+    )
+
+    time_zero = (
+        "Date of treatment strategy assignment."
+    )
+
+    treatment_strategy = (
+        "Treatment versus comparator strategy."
+    )
+
+    follow_up = (
+        "Follow participants until endpoint occurrence or censoring."
+    )
+
+    causal_contrast = (
+        "Treatment effect under target trial framework."
+    )
+
+    recommended_method = (
+        "Inverse Probability of Treatment Weighting (IPTW)"
+    )
+
+    if (
+        "survival" in text
+        or "time to event" in text
+    ):
+
+        recommended_method = (
+            "Marginal Structural Model (MSM)"
+        )
+
+    return TTEResponse(
+
+        eligibility_criteria=
+            eligibility_criteria,
+
+        time_zero=
+            time_zero,
+
+        treatment_strategy=
+            treatment_strategy,
+
+        follow_up=
+            follow_up,
+
+        causal_contrast=
+            causal_contrast,
+
+        recommended_method=
+            recommended_method
     )
