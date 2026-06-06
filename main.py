@@ -13,6 +13,7 @@ app = FastAPI(
         }
     ]
 )
+
 def search_clinicaltrials(
     query: str
 ):
@@ -20,15 +21,12 @@ def search_clinicaltrials(
     try:
 
         url = (
-            "https://clinicaltrials.gov/api/query/study_fields"
+            "https://clinicaltrials.gov/api/v2/studies"
         )
 
         params = {
-            "expr": query,
-            "fields": "NCTId,BriefTitle",
-            "min_rnk": 1,
-            "max_rnk": 5,
-            "fmt": "json"
+            "query.term": query,
+            "pageSize": 5
         }
 
         response = requests.get(
@@ -39,26 +37,41 @@ def search_clinicaltrials(
 
         data = response.json()
 
-        studies = (
-            data["StudyFieldsResponse"]
-            ["StudyFields"]
+        studies = data.get(
+            "studies",
+            []
         )
 
         results = []
 
         for study in studies:
 
-            title = (
-                study["BriefTitle"][0]
-                if study["BriefTitle"]
-                else "Unknown"
+            protocol = study.get(
+                "protocolSection",
+                {}
             )
 
-            results.append(title)
+            identification = protocol.get(
+                "identificationModule",
+                {}
+            )
+
+            title = identification.get(
+                "briefTitle"
+            )
+
+            if title:
+
+                results.append(title)
 
         return results
 
-    except Exception:
+    except Exception as e:
+
+        print(
+            "ClinicalTrials Error:",
+            str(e)
+        )
 
         return []
     
