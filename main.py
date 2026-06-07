@@ -1222,7 +1222,9 @@ def recommend_design_v2(
 # T-Test Sample Size
 # =========================
 
-@app.post("/sample-size/ttest")
+@app.post("/sample-size/ttest",
+          tags=["Statistics"]
+)
 def calculate_ttest(req: TTestRequest):
 
     analysis = TTestIndPower()
@@ -1255,7 +1257,9 @@ def calculate_ttest(req: TTestRequest):
 # Proportion Sample Size
 # =========================
 
-@app.post("/sample-size/proportion")
+@app.post("/sample-size/proportion",
+          tags=["Statistics"]
+)
 def calculate_proportion(req: ProportionRequest):
 
     effect_size = proportion_effectsize(
@@ -1303,7 +1307,9 @@ def calculate_proportion(req: ProportionRequest):
         "protocol_justification": justification
     }
 
-@app.post("/sample-size/noninferiority/binary")
+@app.post("/sample-size/noninferiority/binary",
+          tags=["Statistics"]
+)
 def calculate_noninferiority_binary(
     req: NonInferiorityBinaryRequest
 ):
@@ -1415,7 +1421,9 @@ def calculate_noninferiority_continuous(
         "protocol_justification": justification
     }
 
-@app.post("/sample-size/survival")
+@app.post("/sample-size/survival",
+          tags=["Statistics"]
+)
 def calculate_survival(req: SurvivalRequest):
 
     z_alpha = norm.ppf(
@@ -1471,7 +1479,9 @@ def calculate_survival(req: SurvivalRequest):
         "protocol_justification": justification
     }
 
-@app.post("/protocol/sample-size")
+@app.post("/protocol/sample-size",
+          tags=["Protocol Development"]
+)
 def generate_sample_size_protocol(
     req: ProtocolSampleSizeRequest
 ):
@@ -1493,7 +1503,9 @@ def generate_sample_size_protocol(
         "protocol_text": protocol_text
     }
 
-@app.post("/protocol/endpoints")
+@app.post("/protocol/endpoints",
+          tags=["Protocol Development"]
+)
 def generate_protocol_endpoints(
     req: ProtocolEndpointsRequest
 ):
@@ -1522,7 +1534,9 @@ def generate_protocol_endpoints(
         "exploratory_endpoints": exploratory_endpoints
     }
 
-@app.post("/protocol/estimand")
+@app.post("/protocol/estimand",
+          tags=["Protocol Development"]
+)
 def generate_estimand(
     req: ProtocolEstimandRequest
 ):
@@ -1548,6 +1562,7 @@ def generate_estimand(
 @app.post("/sap/statistical-analysis-plan")
 def generate_sap(
     req: SAPRequest
+    tags=["Statistical Analysis Plan"]
 ):
 
     endpoint_type = req.endpoint_type.lower()
@@ -1664,6 +1679,7 @@ def calculate_survival_noninferiority(
 @app.post(
     "/orchestrator/design-discussion",
     response_model=DesignDiscussionResponse
+    tags=["Methodologist"]
 )
 def design_discussion(
     req: DesignDiscussionRequest
@@ -1759,6 +1775,7 @@ def design_discussion(
 @app.post(
     "/orchestrator/analogous-trials",
     response_model=AnalogousTrialResponse
+    tags=["Foundation"]
 )
 def analogous_trials(
     req: AnalogousTrialRequest
@@ -1857,6 +1874,7 @@ def analogous_trials(
 @app.post(
     "/orchestrator/evidence-review",
     response_model=EvidenceReviewResponse
+    tags=["Foundation"]
 )
 def evidence_review(
     req: EvidenceReviewRequest
@@ -2009,6 +2027,7 @@ def evidence_review(
 @app.post(
     "/orchestrator/query-intelligence",
     response_model=QueryIntelligenceResponse
+    tags=["Foundation"]
 )
 def query_intelligence(
     req: QueryIntelligenceRequest
@@ -2065,6 +2084,7 @@ def query_intelligence(
 @app.post(
     "/orchestrator/research-question",
     response_model=ResearchQuestionResponse
+    tags=["Foundation"]
 )
 def research_question(
     req: ResearchQuestionRequest
@@ -2174,6 +2194,7 @@ def research_question(
 @app.post(
     "/orchestrator/design-tradeoff",
     response_model=DesignTradeoffResponse
+    tags=["Methodologist"]
 )
 def design_tradeoff(
     req: DesignTradeoffRequest
@@ -2273,6 +2294,7 @@ def design_tradeoff(
 @app.post(
     "/orchestrator/feasibility-analysis",
     response_model=FeasibilityResponse
+    tags=["Trial Planning"]
 )
 def feasibility_analysis(
     req: FeasibilityRequest
@@ -2343,6 +2365,7 @@ def feasibility_analysis(
 @app.post(
     "/orchestrator/study-concept",
     response_model=TrialSpecification
+    tags=["Trial Planning"]
 )
 def orchestrate_study_concept(
     req: StudyConceptRequest
@@ -2627,6 +2650,7 @@ def orchestrate_study_concept(
 @app.post(
     "/orchestrator/feasibility-optimization",
     response_model=FeasibilityOptimizationResponse
+    tags=["Trial Planning"]
 )
 def feasibility_optimization(
     req: FeasibilityOptimizationRequest
@@ -2728,6 +2752,7 @@ def feasibility_optimization(
 @app.post(
     "/orchestrator/budget-estimation",
     response_model=BudgetResponse
+    tags=["Trial Planning"]
 )
 def budget_estimation(
     req: BudgetRequest
@@ -2799,6 +2824,7 @@ def budget_estimation(
 @app.post(
     "/orchestrator/design-selection",
     response_model=DesignSelectionResponse
+    tags=["Methodologist"]
 )
 def design_selection(
     req: DesignSelectionRequest
@@ -2931,6 +2957,7 @@ def design_selection(
 @app.post(
     "/orchestrator/design-architecture",
     response_model=DesignArchitectureResponse
+    tags=["Methodologist"]
 )
 def design_architecture(
     req: DesignArchitectureRequest
@@ -3064,6 +3091,7 @@ def design_architecture(
 @app.post(
     "/orchestrator/advanced-statistical-design",
     response_model=AdvancedStatisticalDesignResponse
+    tags=["Methodologist"]
 )
 def advanced_statistical_design(
     req: AdvancedStatisticalDesignRequest
@@ -3139,6 +3167,7 @@ def advanced_statistical_design(
 @app.post(
     "/orchestrator/disease-knowledge",
     response_model=DiseaseKnowledgeResponse
+    tags=["Disease Intelligence"]
 )
 def disease_knowledge(
     req: DiseaseKnowledgeRequest
@@ -3194,6 +3223,7 @@ def disease_knowledge(
 @app.post(
     "/orchestrator/hepatology-intelligence",
     response_model=HepatologyIntelligenceResponse
+    tags=["Hepatology Research OS"]
 )
 def hepatology_intelligence(
     req: HepatologyIntelligenceRequest
@@ -3768,6 +3798,7 @@ def hepatology_intelligence(
 @app.post(
     "/orchestrator/hepatology-intelligence-update",
     response_model=IntelligenceUpdateResponse
+    tags=["Hepatology Research OS"]
 )
 def hepatology_intelligence_update(
     req: IntelligenceUpdateRequest
@@ -3855,6 +3886,7 @@ def hepatology_intelligence_update(
 @app.post(
     "/orchestrator/research-opportunity",
     response_model=ResearchOpportunityResponse
+    tags=["Hepatology Research OS"]
 )
 def research_opportunity(
     req: ResearchOpportunityRequest
@@ -4022,6 +4054,7 @@ def research_opportunity(
 @app.post(
     "/orchestrator/precision-hepatology",
     response_model=PrecisionHepatologyResponse
+    tags=["Hepatology Research OS"]
 )
 def precision_hepatology(
     req: PrecisionHepatologyRequest
@@ -4167,6 +4200,7 @@ def precision_hepatology(
 @app.post(
     "/orchestrator/future-methodology",
     response_model=FutureMethodologyResponse
+    tags=["Hepatology Research OS"]
 )
 def future_methodology(
     req: FutureMethodologyRequest
@@ -4546,6 +4580,7 @@ def statistical_consequence(
 @app.post(
     "/orchestrator/trial-landscape",
     response_model=TrialLandscapeResponse
+    tags=["Foundation"]
 )
 def trial_landscape(
     req: TrialLandscapeRequest
@@ -4599,6 +4634,7 @@ def trial_landscape(
 @app.post(
     "/orchestrator/unmet-need",
     response_model=UnmetNeedResponse
+    tags=["Foundation"]
 )
 def unmet_need(
     req: TrialLandscapeRequest
@@ -4765,6 +4801,7 @@ def endpoint_intelligence(
 @app.post(
     "/orchestrator/interim-analysis",
     response_model=InterimAnalysisResponse
+    tags=["Statistics"]
 )
 def interim_analysis(
     req: InterimAnalysisRequest
@@ -4846,6 +4883,7 @@ def interim_analysis(
 @app.post(
     "/orchestrator/interim-analysis-v2",
     response_model=InterimAnalysisV2Response
+    tags=["Statistics"]
 )
 def interim_analysis_v2(
     req: InterimAnalysisV2Request
@@ -4880,6 +4918,7 @@ def interim_analysis_v2(
 @app.post(
     "/orchestrator/interim-analysis-v3",
     response_model=InterimAnalysisV3Response
+    tags=["Statistics"]
 )
 def interim_analysis_v3(
     req: InterimAnalysisV3Request
@@ -4957,6 +4996,7 @@ def interim_analysis_v3(
 @app.post(
     "/orchestrator/clinicaltrialsgov-package",
     response_model=ClinicalTrialsGovResponse
+    tags=["Trial Operations"]
 )
 def clinicaltrialsgov_package(
     req: ClinicalTrialsGovRequest
@@ -5025,6 +5065,7 @@ def clinicaltrialsgov_package(
 @app.post(
     "/orchestrator/clinicaltrialsgov-package-v2",
     response_model=ClinicalTrialsGovV2Response
+    tags=["Trial Operations"]
 )
 def clinicaltrialsgov_package_v2(
     req: ClinicalTrialsGovV2Request
@@ -5118,6 +5159,7 @@ def clinicaltrialsgov_package_v2(
 @app.post(
     "/orchestrator/crf-builder",
     response_model=CRFBuilderResponse
+    tags=["Trial Operations"]
 )
 def crf_builder(
     req: CRFBuilderRequest
@@ -5187,6 +5229,7 @@ def crf_builder(
 @app.post(
     "/orchestrator/redcap-builder-v2",
     response_model=REDCapBuilderResponse
+    tags=["Trial Operations"]
 )
 def redcap_builder_v2(
     req: REDCapBuilderRequest
@@ -5243,6 +5286,7 @@ def redcap_builder_v2(
 @app.post(
     "/orchestrator/redcap-builder-v3",
     response_model=REDCapBuilderV3Response
+    tags=["Trial Operations"]
 )
 def redcap_builder_v3(
     req: REDCapBuilderV3Request
@@ -5389,6 +5433,7 @@ def redcap_builder_v3(
 @app.post(
     "/orchestrator/brochure-generator",
     response_model=BrochureResponse
+    tags=["Trial Operations"]
 )
 def brochure_generator(
     req: BrochureRequest
@@ -5438,6 +5483,7 @@ def brochure_generator(
 @app.post(
     "/orchestrator/advanced-sap",
     response_model=AdvancedSAPResponse
+    tags=["Statistics"]
 )
 def advanced_sap(
     req: AdvancedSAPRequest
