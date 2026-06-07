@@ -1001,6 +1001,32 @@ class ResearchOpportunityResponse(BaseModel):
 
     recommended_next_studies: list
 
+# =========================
+# Precision Hepatology Engine
+# =========================
+
+class PrecisionHepatologyRequest(BaseModel):
+
+    disease: str
+
+
+class PrecisionHepatologyResponse(BaseModel):
+
+    disease: str
+
+    enrichment_strategies: list
+
+    biomarker_strategies: list
+
+    genetic_strategies: list
+
+    immune_strategies: list
+
+    ctDNA_strategies: list
+
+    risk_prediction_strategies: list
+
+    precision_trial_concepts: list
 
 # =========================
 # Root Endpoint
@@ -3958,6 +3984,151 @@ def research_opportunity(
         strategic_priority_score=0,
 
         recommended_next_studies=[]
+    )
+
+# =========================
+# Precision Hepatology Engine
+# =========================
+
+@app.post(
+    "/orchestrator/precision-hepatology",
+    response_model=PrecisionHepatologyResponse
+)
+def precision_hepatology(
+    req: PrecisionHepatologyRequest
+):
+
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return PrecisionHepatologyResponse(
+
+            disease=req.disease,
+
+            enrichment_strategies=[
+                "HBcrAg-guided Enrichment",
+                "HBV RNA-guided Enrichment"
+            ],
+
+            biomarker_strategies=[
+                "HBcrAg",
+                "HBV RNA",
+                "qHBsAg"
+            ],
+
+            genetic_strategies=[
+                "Host Genetic Risk Profiling"
+            ],
+
+            immune_strategies=[
+                "T-cell Profiling",
+                "Immune Signature Classification"
+            ],
+
+            ctDNA_strategies=[],
+
+            risk_prediction_strategies=[
+                "Relapse Prediction Models",
+                "AI-assisted Risk Prediction"
+            ],
+
+            precision_trial_concepts=[
+                "Biomarker-guided Stopping Trial",
+                "Precision Functional Cure Trial"
+            ]
+        )
+
+    elif disease in ["masld", "mash"]:
+
+        return PrecisionHepatologyResponse(
+
+            disease=req.disease,
+
+            enrichment_strategies=[
+                "Fibrosis Enrichment",
+                "High-risk Metabolic Phenotype"
+            ],
+
+            biomarker_strategies=[
+                "ELF",
+                "PRO-C3"
+            ],
+
+            genetic_strategies=[
+                "Polygenic Risk Scores"
+            ],
+
+            immune_strategies=[],
+
+            ctDNA_strategies=[],
+
+            risk_prediction_strategies=[
+                "Fibrosis Progression Models"
+            ],
+
+            precision_trial_concepts=[
+                "Precision Fibrosis Trial",
+                "Biomarker-enriched MASH Trial"
+            ]
+        )
+
+    elif disease == "hcc":
+
+        return PrecisionHepatologyResponse(
+
+            disease=req.disease,
+
+            enrichment_strategies=[
+                "ctDNA-positive Population",
+                "MRD-positive Population"
+            ],
+
+            biomarker_strategies=[
+                "AFP",
+                "ctDNA",
+                "MRD"
+            ],
+
+            genetic_strategies=[
+                "Molecular Subtype Selection"
+            ],
+
+            immune_strategies=[
+                "Immune Microenvironment Profiling"
+            ],
+
+            ctDNA_strategies=[
+                "ctDNA-guided Adjuvant Therapy"
+            ],
+
+            risk_prediction_strategies=[
+                "Recurrence Prediction Models"
+            ],
+
+            precision_trial_concepts=[
+                "MRD-guided Adjuvant Trial",
+                "ctDNA-guided Surveillance Trial"
+            ]
+        )
+
+    return PrecisionHepatologyResponse(
+
+        disease=req.disease,
+
+        enrichment_strategies=[],
+
+        biomarker_strategies=[],
+
+        genetic_strategies=[],
+
+        immune_strategies=[],
+
+        ctDNA_strategies=[],
+
+        risk_prediction_strategies=[],
+
+        precision_trial_concepts=[]
     )
 
 @app.post(
