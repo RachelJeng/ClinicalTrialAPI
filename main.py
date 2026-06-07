@@ -374,17 +374,15 @@ class BudgetResponse(BaseModel):
 
     estimated_total_budget: float
 
+
+# =========================
+# Design Selection Engine
+# =========================
+
 class DesignSelectionRequest(BaseModel):
 
     research_question: str
 
-# =========================
-# Design Architecture Engine
-# =========================
-
-class DesignArchitectureRequest(BaseModel):
-
-    research_question: str
 
 class DesignSelectionResponse(BaseModel):
 
@@ -394,6 +392,16 @@ class DesignSelectionResponse(BaseModel):
 
     recommendation: str | None = None
 
+
+# =========================
+# Design Architecture Engine
+# =========================
+
+class DesignArchitectureRequest(BaseModel):
+
+    research_question: str
+
+
 class DesignArchitectureResponse(BaseModel):
 
     research_question: str
@@ -401,6 +409,41 @@ class DesignArchitectureResponse(BaseModel):
     architecture_options: list = []
 
     recommendation: str | None = None
+
+
+# =========================
+# Advanced Statistical Design Engine
+# =========================
+
+class AdvancedStatisticalDesignRequest(BaseModel):
+
+    research_question: str
+
+    endpoint_type: str
+
+    study_design: str
+
+
+class AdvancedStatisticalDesignResponse(BaseModel):
+
+    multiplicity_strategy: str
+
+    alpha_control_strategy: str
+
+    adaptive_reestimation: str
+
+    competing_risk_strategy: str
+
+    multistate_model_recommendation: str
+
+    joint_model_recommendation: str
+
+    bayesian_borrowing: str
+
+    external_control_strategy: str
+
+    recommendation: str
+
 
 class AssumptionAnalysisRequest(BaseModel):
 
@@ -2826,6 +2869,84 @@ def design_architecture(
 
         architecture_options=
             options,
+
+        recommendation=
+            recommendation
+    )
+
+# =========================
+# Advanced Statistical Design Engine
+# =========================
+
+@app.post(
+    "/orchestrator/advanced-statistical-design",
+    response_model=AdvancedStatisticalDesignResponse
+)
+def advanced_statistical_design(
+    req: AdvancedStatisticalDesignRequest
+):
+
+    multiplicity_strategy = (
+        "Hierarchical Testing"
+    )
+
+    alpha_control_strategy = (
+        "Family-wise Error Control"
+    )
+
+    adaptive_reestimation = (
+        "Consider adaptive sample size re-estimation if recruitment uncertainty exists."
+    )
+
+    competing_risk_strategy = (
+        "Fine-Gray model should be considered when competing risks are present."
+    )
+
+    multistate_model_recommendation = (
+        "Consider multi-state models when disease transitions are clinically relevant."
+    )
+
+    joint_model_recommendation = (
+        "Consider joint modeling when longitudinal biomarkers and time-to-event outcomes coexist."
+    )
+
+    bayesian_borrowing = (
+        "Historical borrowing may be considered if external evidence is robust."
+    )
+
+    external_control_strategy = (
+        "External controls may be considered when randomization is infeasible."
+    )
+
+    recommendation = (
+        "Advanced statistical design considerations should be prespecified in the SAP and protocol."
+    )
+
+    return AdvancedStatisticalDesignResponse(
+
+        multiplicity_strategy=
+            multiplicity_strategy,
+
+        alpha_control_strategy=
+            alpha_control_strategy,
+
+        adaptive_reestimation=
+            adaptive_reestimation,
+
+        competing_risk_strategy=
+            competing_risk_strategy,
+
+        multistate_model_recommendation=
+            multistate_model_recommendation,
+
+        joint_model_recommendation=
+            joint_model_recommendation,
+
+        bayesian_borrowing=
+            bayesian_borrowing,
+
+        external_control_strategy=
+            external_control_strategy,
 
         recommendation=
             recommendation
