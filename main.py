@@ -874,6 +874,15 @@ class TTEV3Response(BaseModel):
 
     target_trial_bias_report: list[str] = []
 
+# =========================
+# Disease Knowledge Engine
+# =========================
+
+class DiseaseKnowledgeRequest(BaseModel):
+
+    disease: str
+
+
 class DiseaseKnowledgeResponse(BaseModel):
 
     disease: str
