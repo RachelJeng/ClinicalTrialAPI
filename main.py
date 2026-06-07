@@ -102,8 +102,6 @@ GPT_SURFACE_PATHS = {
 
     "/sap/statistical-analysis-plan",
 
-    "/orchestrator/interim-analysis-v3",
-
     # =====================
     # Hepatology Research OS
     # =====================
@@ -112,6 +110,10 @@ GPT_SURFACE_PATHS = {
     "/orchestrator/research-opportunity",
     "/orchestrator/precision-hepatology",
     "/orchestrator/future-methodology",
+
+    # Disease Intelligence
+
+    "/orchestrator/disease-knowledge",
 
     # =====================
     # Trial Planning
@@ -134,6 +136,50 @@ GPT_SURFACE_PATHS = {
     "/orchestrator/clinicaltrialsgov-package-v2",
     "/orchestrator/crf-builder",
     "/orchestrator/redcap-builder-v3",
+}
+
+ADVANCED_GPT_SURFACE_PATHS = {
+
+    # Noninferiority
+
+    "/sample-size/noninferiority/binary",
+    "/sample-size/noninferiority/continuous",
+    "/sample-size/noninferiority/survival",
+
+    # Methodologist
+
+    "/orchestrator/assumption-analysis",
+    "/orchestrator/bias-analysis",
+    "/orchestrator/methodologist-critique",
+    "/orchestrator/statistical-consequence",
+
+    # Target Trial Emulation
+
+    "/orchestrator/tte-design",
+    "/orchestrator/tte-design-v2",
+    "/orchestrator/tte-design-v3",
+
+    # Advanced Statistics
+
+    "/orchestrator/advanced-sap",
+
+    # Interim Analysis
+
+    "/orchestrator/interim-analysis",
+    "/orchestrator/interim-analysis-v2",
+    "/orchestrator/interim-analysis-v3",
+
+    # Operations
+
+    "/orchestrator/brochure-generator",
+
+    "/orchestrator/redcap-builder-v2",
+
+    "/orchestrator/clinicaltrialsgov-package",
+
+    # Intelligence Update
+
+    "/orchestrator/hepatology-intelligence-update",
 }
 
 # =========================
@@ -195,6 +241,34 @@ def openapi_gpt():
 
     return JSONResponse(gpt_schema)
 
+@app.get("/openapi-gpt-advanced.json", include_in_schema=False)
+def openapi_gpt_advanced():
+
+    full_schema = app.openapi()
+
+    advanced_schema = copy.deepcopy(full_schema)
+
+    advanced_schema["paths"] = {
+        path: item
+        for path, item in full_schema["paths"].items()
+        if path in ADVANCED_GPT_SURFACE_PATHS
+    }
+
+    advanced_schema = _prune_unused_components(
+        advanced_schema
+    )
+
+    advanced_schema["info"] = dict(
+        full_schema.get("info", {})
+    )
+
+    advanced_schema["info"]["title"] = (
+        "Hepatology Research OS (Advanced GPT Surface)"
+    )
+
+    return JSONResponse(
+        advanced_schema
+    )
 
 def _prune_unused_components(schema: dict) -> dict:
     """Remove component schemas not reachable from the retained paths."""
