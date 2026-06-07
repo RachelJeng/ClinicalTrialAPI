@@ -968,6 +968,39 @@ class IntelligenceUpdateResponse(BaseModel):
 
     potential_impact: list
 
+# =========================
+# Research Opportunity Engine
+# =========================
+
+class ResearchOpportunityRequest(BaseModel):
+
+    disease: str
+
+    research_focus: str | None = None
+
+
+class ResearchOpportunityResponse(BaseModel):
+
+    disease: str
+
+    evidence_gap: list
+
+    clinical_gap: list
+
+    biomarker_gap: list
+
+    therapeutic_gap: list
+
+    trial_design_gap: list
+
+    publication_opportunities: list
+
+    competitive_density: str
+
+    strategic_priority_score: int
+
+    recommended_next_studies: list
+
 
 # =========================
 # Root Endpoint
@@ -3758,6 +3791,173 @@ def hepatology_intelligence_update(
         publication_relevance=[],
 
         potential_impact=[]
+    )
+
+# =========================
+# Research Opportunity Engine
+# =========================
+
+@app.post(
+    "/orchestrator/research-opportunity",
+    response_model=ResearchOpportunityResponse
+)
+def research_opportunity(
+    req: ResearchOpportunityRequest
+):
+
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return ResearchOpportunityResponse(
+
+            disease=req.disease,
+
+            evidence_gap=[
+                "HBcrAg-guided stopping lacks definitive randomized validation",
+                "Long-term finite therapy outcomes remain uncertain"
+            ],
+
+            clinical_gap=[
+                "Need for safer finite therapy strategies",
+                "Improved relapse prediction after NA withdrawal"
+            ],
+
+            biomarker_gap=[
+                "Combined HBV RNA + HBcrAg algorithms",
+                "Immune signature validation"
+            ],
+
+            therapeutic_gap=[
+                "Combination cure regimens",
+                "siRNA-based finite therapy strategies"
+            ],
+
+            trial_design_gap=[
+                "Adaptive biomarker-guided stopping trials",
+                "Platform cure trials"
+            ],
+
+            publication_opportunities=[
+                "Functional Cure",
+                "Biomarker-guided Withdrawal",
+                "Combination Cure Strategies"
+            ],
+
+            competitive_density="high",
+
+            strategic_priority_score=92,
+
+            recommended_next_studies=[
+                "HBcrAg-guided stopping RCT",
+                "AI-assisted relapse prediction study",
+                "Combination cure platform trial"
+            ]
+        )
+
+    elif disease in ["masld", "mash"]:
+
+        return ResearchOpportunityResponse(
+
+            disease=req.disease,
+
+            evidence_gap=[
+                "Histology-free endpoint validation remains incomplete"
+            ],
+
+            clinical_gap=[
+                "Identification of rapid fibrosis progressors"
+            ],
+
+            biomarker_gap=[
+                "ELF and PRO-C3 integration"
+            ],
+
+            therapeutic_gap=[
+                "Combination therapy sequencing"
+            ],
+
+            trial_design_gap=[
+                "Adaptive enrichment trials"
+            ],
+
+            publication_opportunities=[
+                "Histology-free Endpoints",
+                "Precision Fibrosis Enrichment"
+            ],
+
+            competitive_density="very high",
+
+            strategic_priority_score=88,
+
+            recommended_next_studies=[
+                "Histology-free endpoint validation study",
+                "Precision enrichment trial"
+            ]
+        )
+
+    elif disease == "hcc":
+
+        return ResearchOpportunityResponse(
+
+            disease=req.disease,
+
+            evidence_gap=[
+                "ctDNA-guided adjuvant strategies remain underdeveloped"
+            ],
+
+            clinical_gap=[
+                "Recurrence prediction after curative therapy"
+            ],
+
+            biomarker_gap=[
+                "MRD validation"
+            ],
+
+            therapeutic_gap=[
+                "Immunotherapy sequencing"
+            ],
+
+            trial_design_gap=[
+                "Platform immunotherapy trials"
+            ],
+
+            publication_opportunities=[
+                "ctDNA-guided Therapy",
+                "Platform Trial Design"
+            ],
+
+            competitive_density="very high",
+
+            strategic_priority_score=95,
+
+            recommended_next_studies=[
+                "ctDNA-guided adjuvant RCT",
+                "Adaptive platform immunotherapy trial"
+            ]
+        )
+
+    return ResearchOpportunityResponse(
+
+        disease=req.disease,
+
+        evidence_gap=[],
+
+        clinical_gap=[],
+
+        biomarker_gap=[],
+
+        therapeutic_gap=[],
+
+        trial_design_gap=[],
+
+        publication_opportunities=[],
+
+        competitive_density="unknown",
+
+        strategic_priority_score=0,
+
+        recommended_next_studies=[]
     )
 
 @app.post(
