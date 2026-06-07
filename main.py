@@ -1029,6 +1029,35 @@ class PrecisionHepatologyResponse(BaseModel):
     precision_trial_concepts: list
 
 # =========================
+# Future Methodology Engine
+# =========================
+
+class FutureMethodologyRequest(BaseModel):
+
+    disease: str
+
+
+class FutureMethodologyResponse(BaseModel):
+
+    disease: str
+
+    emerging_trial_designs: list
+
+    emerging_statistical_methods: list
+
+    digital_biomarker_trends: list
+
+    ai_trial_design_trends: list
+
+    synthetic_control_trends: list
+
+    federated_trial_trends: list
+
+    adoption_timeline: list
+
+    future_impact_assessment: list
+
+# =========================
 # Root Endpoint
 # =========================
 
@@ -4129,6 +4158,180 @@ def precision_hepatology(
         risk_prediction_strategies=[],
 
         precision_trial_concepts=[]
+    )
+
+# =========================
+# Future Methodology Engine
+# =========================
+
+@app.post(
+    "/orchestrator/future-methodology",
+    response_model=FutureMethodologyResponse
+)
+def future_methodology(
+    req: FutureMethodologyRequest
+):
+
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return FutureMethodologyResponse(
+
+            disease=req.disease,
+
+            emerging_trial_designs=[
+                "Adaptive Platform Trials",
+                "Biomarker-guided Adaptive Trials",
+                "Master Protocols"
+            ],
+
+            emerging_statistical_methods=[
+                "Bayesian Learning Systems",
+                "Dynamic Treatment Regimes",
+                "Joint Models"
+            ],
+
+            digital_biomarker_trends=[
+                "Continuous Biomarker Monitoring",
+                "AI-derived Biomarkers"
+            ],
+
+            ai_trial_design_trends=[
+                "AI-assisted Eligibility Selection",
+                "AI-guided Adaptive Design"
+            ],
+
+            synthetic_control_trends=[
+                "External Control Arms",
+                "Synthetic Cohorts"
+            ],
+
+            federated_trial_trends=[
+                "Multi-center Federated Networks"
+            ],
+
+            adoption_timeline=[
+                "2025-2030: Biomarker-guided Trials",
+                "2030-2035: AI-assisted Trial Design",
+                "2035-2045: Learning Trial Systems"
+            ],
+
+            future_impact_assessment=[
+                "May redefine finite therapy studies",
+                "May accelerate functional cure development"
+            ]
+        )
+
+    elif disease in ["masld", "mash"]:
+
+        return FutureMethodologyResponse(
+
+            disease=req.disease,
+
+            emerging_trial_designs=[
+                "Adaptive Enrichment",
+                "Master Protocols"
+            ],
+
+            emerging_statistical_methods=[
+                "Bayesian Adaptive Design",
+                "Joint Models"
+            ],
+
+            digital_biomarker_trends=[
+                "Digital Histology",
+                "AI Pathology"
+            ],
+
+            ai_trial_design_trends=[
+                "AI-powered Patient Enrichment"
+            ],
+
+            synthetic_control_trends=[
+                "Synthetic Comparator Arms"
+            ],
+
+            federated_trial_trends=[
+                "Global MASLD Research Networks"
+            ],
+
+            adoption_timeline=[
+                "2025-2030: Histology-free Endpoints",
+                "2030-2035: AI-guided Enrichment",
+                "2035-2045: Fully Adaptive Precision Trials"
+            ],
+
+            future_impact_assessment=[
+                "May reduce biopsy dependence",
+                "May improve trial efficiency"
+            ]
+        )
+
+    elif disease == "hcc":
+
+        return FutureMethodologyResponse(
+
+            disease=req.disease,
+
+            emerging_trial_designs=[
+                "Platform Immunotherapy Trials",
+                "Adaptive Platform Trials"
+            ],
+
+            emerging_statistical_methods=[
+                "Joint Frailty Models",
+                "Multi-state Models"
+            ],
+
+            digital_biomarker_trends=[
+                "ctDNA Monitoring",
+                "MRD-guided Therapy"
+            ],
+
+            ai_trial_design_trends=[
+                "AI-guided Recurrence Prediction"
+            ],
+
+            synthetic_control_trends=[
+                "External Control Integration"
+            ],
+
+            federated_trial_trends=[
+                "Global HCC Trial Networks"
+            ],
+
+            adoption_timeline=[
+                "2025-2030: ctDNA-guided Trials",
+                "2030-2035: Adaptive Platform Expansion",
+                "2035-2045: Precision Oncology Ecosystems"
+            ],
+
+            future_impact_assessment=[
+                "May transform adjuvant therapy strategies",
+                "May personalize recurrence prevention"
+            ]
+        )
+
+    return FutureMethodologyResponse(
+
+        disease=req.disease,
+
+        emerging_trial_designs=[],
+
+        emerging_statistical_methods=[],
+
+        digital_biomarker_trends=[],
+
+        ai_trial_design_trends=[],
+
+        synthetic_control_trends=[],
+
+        federated_trial_trends=[],
+
+        adoption_timeline=[],
+
+        future_impact_assessment=[]
     )
 
 @app.post(
