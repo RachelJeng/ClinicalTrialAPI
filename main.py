@@ -25,17 +25,25 @@ import group3_hepatology
 import group4_intelligence
 
 
+import os
+
 API_VERSION = "2.0.0"
 SYSTEM_NAME = "Hepatology Research OS"
+
+SERVER_URL = os.getenv(
+    "SERVER_URL",
+    "https://clinicaltrialapi-dqml.onrender.com"
+)
 
 app = FastAPI(
     title="Rachel Hepatology Research OS",
     version=API_VERSION,
     servers=[
-        {"url": "https://clinicaltrialapi-dqml.onrender.com"},
+        {
+            "url": SERVER_URL
+        }
     ],
 )
-
 
 # =========================
 # Router Assembly
