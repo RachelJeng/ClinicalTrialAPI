@@ -1,0 +1,1152 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hepatology Research OS (GPT Surface)",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://clinicaltrialapi-dqml.onrender.com"
+    }
+  ],
+  "paths": {
+    "/sample-size/ttest": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Calculate Ttest",
+        "operationId": "calculate_ttest_sample_size_ttest_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TTestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample-size/proportion": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Calculate Proportion",
+        "operationId": "calculate_proportion_sample_size_proportion_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProportionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample-size/survival": {
+      "post": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Calculate Survival",
+        "operationId": "calculate_survival_sample_size_survival_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurvivalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/design-architecture": {
+      "post": {
+        "tags": [
+          "Methodologist"
+        ],
+        "summary": "Design Architecture",
+        "operationId": "design_architecture_orchestrator_design_architecture_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DesignArchitectureRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DesignArchitectureResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/advanced-statistical-design": {
+      "post": {
+        "tags": [
+          "Methodologist"
+        ],
+        "summary": "Advanced Statistical Design",
+        "operationId": "advanced_statistical_design_orchestrator_advanced_statistical_design_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdvancedStatisticalDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvancedStatisticalDesignResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/protocol/endpoints": {
+      "post": {
+        "tags": [
+          "Protocol Development"
+        ],
+        "summary": "Generate Protocol Endpoints",
+        "operationId": "generate_protocol_endpoints_protocol_endpoints_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtocolEndpointsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/protocol/estimand": {
+      "post": {
+        "tags": [
+          "Protocol Development"
+        ],
+        "summary": "Generate Estimand",
+        "operationId": "generate_estimand_protocol_estimand_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtocolEstimandRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sap/statistical-analysis-plan": {
+      "post": {
+        "tags": [
+          "Statistical Analysis Plan"
+        ],
+        "summary": "Generate Sap",
+        "operationId": "generate_sap_sap_statistical_analysis_plan_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SAPRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/hepatology-intelligence": {
+      "post": {
+        "tags": [
+          "Hepatology Research OS"
+        ],
+        "summary": "Hepatology Intelligence",
+        "operationId": "hepatology_intelligence_orchestrator_hepatology_intelligence_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HepatologyIntelligenceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HepatologyIntelligenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/research-opportunity": {
+      "post": {
+        "tags": [
+          "Hepatology Research OS"
+        ],
+        "summary": "Research Opportunity",
+        "operationId": "research_opportunity_orchestrator_research_opportunity_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchOpportunityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchOpportunityResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/precision-hepatology": {
+      "post": {
+        "tags": [
+          "Hepatology Research OS"
+        ],
+        "summary": "Precision Hepatology",
+        "operationId": "precision_hepatology_orchestrator_precision_hepatology_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrecisionHepatologyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrecisionHepatologyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orchestrator/future-methodology": {
+      "post": {
+        "tags": [
+          "Hepatology Research OS"
+        ],
+        "summary": "Future Methodology",
+        "operationId": "future_methodology_orchestrator_future_methodology_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FutureMethodologyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FutureMethodologyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdvancedStatisticalDesignRequest": {
+        "properties": {
+          "research_question": {
+            "type": "string",
+            "title": "Research Question"
+          },
+          "endpoint_type": {
+            "type": "string",
+            "title": "Endpoint Type"
+          },
+          "study_design": {
+            "type": "string",
+            "title": "Study Design"
+          }
+        },
+        "type": "object",
+        "required": [
+          "research_question",
+          "endpoint_type",
+          "study_design"
+        ],
+        "title": "AdvancedStatisticalDesignRequest"
+      },
+      "AdvancedStatisticalDesignResponse": {
+        "properties": {
+          "multiplicity_strategy": {
+            "type": "string",
+            "title": "Multiplicity Strategy"
+          },
+          "alpha_control_strategy": {
+            "type": "string",
+            "title": "Alpha Control Strategy"
+          },
+          "adaptive_reestimation": {
+            "type": "string",
+            "title": "Adaptive Reestimation"
+          },
+          "competing_risk_strategy": {
+            "type": "string",
+            "title": "Competing Risk Strategy"
+          },
+          "multistate_model_recommendation": {
+            "type": "string",
+            "title": "Multistate Model Recommendation"
+          },
+          "joint_model_recommendation": {
+            "type": "string",
+            "title": "Joint Model Recommendation"
+          },
+          "bayesian_borrowing": {
+            "type": "string",
+            "title": "Bayesian Borrowing"
+          },
+          "external_control_strategy": {
+            "type": "string",
+            "title": "External Control Strategy"
+          },
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "multiplicity_strategy",
+          "alpha_control_strategy",
+          "adaptive_reestimation",
+          "competing_risk_strategy",
+          "multistate_model_recommendation",
+          "joint_model_recommendation",
+          "bayesian_borrowing",
+          "external_control_strategy",
+          "recommendation"
+        ],
+        "title": "AdvancedStatisticalDesignResponse"
+      },
+      "DesignArchitectureRequest": {
+        "properties": {
+          "research_question": {
+            "type": "string",
+            "title": "Research Question"
+          }
+        },
+        "type": "object",
+        "required": [
+          "research_question"
+        ],
+        "title": "DesignArchitectureRequest"
+      },
+      "DesignArchitectureResponse": {
+        "properties": {
+          "research_question": {
+            "type": "string",
+            "title": "Research Question"
+          },
+          "architecture_options": {
+            "items": {},
+            "type": "array",
+            "title": "Architecture Options",
+            "default": []
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "research_question"
+        ],
+        "title": "DesignArchitectureResponse"
+      },
+      "FutureMethodologyRequest": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease"
+        ],
+        "title": "FutureMethodologyRequest"
+      },
+      "FutureMethodologyResponse": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "emerging_trial_designs": {
+            "items": {},
+            "type": "array",
+            "title": "Emerging Trial Designs"
+          },
+          "emerging_statistical_methods": {
+            "items": {},
+            "type": "array",
+            "title": "Emerging Statistical Methods"
+          },
+          "digital_biomarker_trends": {
+            "items": {},
+            "type": "array",
+            "title": "Digital Biomarker Trends"
+          },
+          "ai_trial_design_trends": {
+            "items": {},
+            "type": "array",
+            "title": "Ai Trial Design Trends"
+          },
+          "synthetic_control_trends": {
+            "items": {},
+            "type": "array",
+            "title": "Synthetic Control Trends"
+          },
+          "federated_trial_trends": {
+            "items": {},
+            "type": "array",
+            "title": "Federated Trial Trends"
+          },
+          "adoption_timeline": {
+            "items": {},
+            "type": "array",
+            "title": "Adoption Timeline"
+          },
+          "future_impact_assessment": {
+            "items": {},
+            "type": "array",
+            "title": "Future Impact Assessment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease",
+          "emerging_trial_designs",
+          "emerging_statistical_methods",
+          "digital_biomarker_trends",
+          "ai_trial_design_trends",
+          "synthetic_control_trends",
+          "federated_trial_trends",
+          "adoption_timeline",
+          "future_impact_assessment"
+        ],
+        "title": "FutureMethodologyResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HepatologyIntelligenceRequest": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease"
+        ],
+        "title": "HepatologyIntelligenceRequest"
+      },
+      "HepatologyIntelligenceResponse": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "clinical_questions": {
+            "items": {},
+            "type": "array",
+            "title": "Clinical Questions"
+          },
+          "preferred_endpoints": {
+            "items": {},
+            "type": "array",
+            "title": "Preferred Endpoints"
+          },
+          "preferred_architectures": {
+            "items": {},
+            "type": "array",
+            "title": "Preferred Architectures"
+          },
+          "preferred_statistics": {
+            "items": {},
+            "type": "array",
+            "title": "Preferred Statistics"
+          },
+          "sample_size_considerations": {
+            "items": {},
+            "type": "array",
+            "title": "Sample Size Considerations"
+          },
+          "interim_analysis_considerations": {
+            "items": {},
+            "type": "array",
+            "title": "Interim Analysis Considerations"
+          },
+          "tte_considerations": {
+            "items": {},
+            "type": "array",
+            "title": "Tte Considerations"
+          },
+          "emerging_biomarkers": {
+            "items": {},
+            "type": "array",
+            "title": "Emerging Biomarkers"
+          },
+          "emerging_therapeutics": {
+            "items": {},
+            "type": "array",
+            "title": "Emerging Therapeutics"
+          },
+          "precision_hepatology": {
+            "items": {},
+            "type": "array",
+            "title": "Precision Hepatology"
+          },
+          "reviewer_attack_points": {
+            "items": {},
+            "type": "array",
+            "title": "Reviewer Attack Points"
+          },
+          "publication_opportunities": {
+            "items": {},
+            "type": "array",
+            "title": "Publication Opportunities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease",
+          "clinical_questions",
+          "preferred_endpoints",
+          "preferred_architectures",
+          "preferred_statistics",
+          "sample_size_considerations",
+          "interim_analysis_considerations",
+          "tte_considerations",
+          "emerging_biomarkers",
+          "emerging_therapeutics",
+          "precision_hepatology",
+          "reviewer_attack_points",
+          "publication_opportunities"
+        ],
+        "title": "HepatologyIntelligenceResponse"
+      },
+      "PrecisionHepatologyRequest": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease"
+        ],
+        "title": "PrecisionHepatologyRequest"
+      },
+      "PrecisionHepatologyResponse": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "enrichment_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Enrichment Strategies"
+          },
+          "biomarker_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Biomarker Strategies"
+          },
+          "genetic_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Genetic Strategies"
+          },
+          "immune_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Immune Strategies"
+          },
+          "ctDNA_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Ctdna Strategies"
+          },
+          "risk_prediction_strategies": {
+            "items": {},
+            "type": "array",
+            "title": "Risk Prediction Strategies"
+          },
+          "precision_trial_concepts": {
+            "items": {},
+            "type": "array",
+            "title": "Precision Trial Concepts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease",
+          "enrichment_strategies",
+          "biomarker_strategies",
+          "genetic_strategies",
+          "immune_strategies",
+          "ctDNA_strategies",
+          "risk_prediction_strategies",
+          "precision_trial_concepts"
+        ],
+        "title": "PrecisionHepatologyResponse"
+      },
+      "ProportionRequest": {
+        "properties": {
+          "p1": {
+            "type": "number",
+            "title": "P1"
+          },
+          "p2": {
+            "type": "number",
+            "title": "P2"
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "default": 0.05
+          },
+          "power": {
+            "type": "number",
+            "title": "Power",
+            "default": 0.8
+          },
+          "dropout_rate": {
+            "type": "number",
+            "title": "Dropout Rate",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "p1",
+          "p2"
+        ],
+        "title": "ProportionRequest"
+      },
+      "ProtocolEndpointsRequest": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "intervention": {
+            "type": "string",
+            "title": "Intervention"
+          },
+          "primary_objective": {
+            "type": "string",
+            "title": "Primary Objective"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease",
+          "intervention",
+          "primary_objective"
+        ],
+        "title": "ProtocolEndpointsRequest"
+      },
+      "ProtocolEstimandRequest": {
+        "properties": {
+          "treatment": {
+            "type": "string",
+            "title": "Treatment"
+          },
+          "population": {
+            "type": "string",
+            "title": "Population"
+          },
+          "endpoint": {
+            "type": "string",
+            "title": "Endpoint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "treatment",
+          "population",
+          "endpoint"
+        ],
+        "title": "ProtocolEstimandRequest"
+      },
+      "ResearchOpportunityRequest": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "research_focus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Research Focus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease"
+        ],
+        "title": "ResearchOpportunityRequest"
+      },
+      "ResearchOpportunityResponse": {
+        "properties": {
+          "disease": {
+            "type": "string",
+            "title": "Disease"
+          },
+          "evidence_gap": {
+            "items": {},
+            "type": "array",
+            "title": "Evidence Gap"
+          },
+          "clinical_gap": {
+            "items": {},
+            "type": "array",
+            "title": "Clinical Gap"
+          },
+          "biomarker_gap": {
+            "items": {},
+            "type": "array",
+            "title": "Biomarker Gap"
+          },
+          "therapeutic_gap": {
+            "items": {},
+            "type": "array",
+            "title": "Therapeutic Gap"
+          },
+          "trial_design_gap": {
+            "items": {},
+            "type": "array",
+            "title": "Trial Design Gap"
+          },
+          "publication_opportunities": {
+            "items": {},
+            "type": "array",
+            "title": "Publication Opportunities"
+          },
+          "competitive_density": {
+            "type": "string",
+            "title": "Competitive Density"
+          },
+          "strategic_priority_score": {
+            "type": "integer",
+            "title": "Strategic Priority Score"
+          },
+          "recommended_next_studies": {
+            "items": {},
+            "type": "array",
+            "title": "Recommended Next Studies"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disease",
+          "evidence_gap",
+          "clinical_gap",
+          "biomarker_gap",
+          "therapeutic_gap",
+          "trial_design_gap",
+          "publication_opportunities",
+          "competitive_density",
+          "strategic_priority_score",
+          "recommended_next_studies"
+        ],
+        "title": "ResearchOpportunityResponse"
+      },
+      "SAPRequest": {
+        "properties": {
+          "endpoint_type": {
+            "type": "string",
+            "title": "Endpoint Type"
+          },
+          "endpoint_name": {
+            "type": "string",
+            "title": "Endpoint Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "endpoint_type",
+          "endpoint_name"
+        ],
+        "title": "SAPRequest"
+      },
+      "SurvivalRequest": {
+        "properties": {
+          "hazard_ratio": {
+            "type": "number",
+            "title": "Hazard Ratio"
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "default": 0.05
+          },
+          "power": {
+            "type": "number",
+            "title": "Power",
+            "default": 0.8
+          },
+          "dropout_rate": {
+            "type": "number",
+            "title": "Dropout Rate",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "hazard_ratio"
+        ],
+        "title": "SurvivalRequest"
+      },
+      "TTestRequest": {
+        "properties": {
+          "effect_size": {
+            "type": "number",
+            "title": "Effect Size"
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "default": 0.05
+          },
+          "power": {
+            "type": "number",
+            "title": "Power",
+            "default": 0.8
+          },
+          "ratio": {
+            "type": "number",
+            "title": "Ratio",
+            "default": 1.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "effect_size"
+        ],
+        "title": "TTestRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
