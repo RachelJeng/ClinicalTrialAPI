@@ -2976,7 +2976,7 @@ def advanced_statistical_design(
         recommendation=
             recommendation
     )
-
+"""
 # =========================
 # Disease Knowledge Engine
 # =========================
@@ -3095,7 +3095,8 @@ def disease_knowledge(
 
         publication_considerations=publication
     )
-
+"""
+    
 @app.post(
     "/orchestrator/assumption-analysis",
     response_model=AssumptionAnalysisResponse
