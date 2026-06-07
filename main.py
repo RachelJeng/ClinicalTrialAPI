@@ -61,33 +61,80 @@ def _router_endpoint_counts() -> dict:
         for name, router in ROUTERS.items()
     }
 
-
-# =========================
-# GPT Surface Whitelist
-# =========================
-# The 10-15 endpoints the GPT actually needs. Keeping this as a path whitelist
-# (rather than a duplicated spec) means adding/removing a GPT endpoint is a
-# one-line change here, and the schema is always generated from the live app.
-
 GPT_SURFACE_PATHS = {
-    # Methodologist
+
+    # =====================
+    # Foundation Layer
+    # =====================
+
+    "/orchestrator/query-intelligence",
+    "/orchestrator/evidence-review",
+    "/orchestrator/trial-landscape",
+    "/orchestrator/unmet-need",
+    "/orchestrator/analogous-trials",
+
+    # =====================
+    # Methodologist Layer
+    # =====================
+
+    "/orchestrator/design-discussion",
+    "/orchestrator/design-selection",
     "/orchestrator/design-architecture",
+    "/orchestrator/design-tradeoff",
     "/orchestrator/advanced-statistical-design",
+
+    # =====================
+    # Endpoint Intelligence
+    # =====================
+
+    "/orchestrator/endpoint-intelligence",
+    "/orchestrator/design-patterns",
+
+    # =====================
+    # Statistics
+    # =====================
+
     "/sample-size/proportion",
     "/sample-size/ttest",
     "/sample-size/survival",
-    # Protocol
-    "/protocol/endpoints",
+
     "/protocol/estimand",
+
     "/sap/statistical-analysis-plan",
-    # Hepatology core
+
+    "/orchestrator/interim-analysis-v3",
+
+    # =====================
+    # Hepatology Research OS
+    # =====================
+
     "/orchestrator/hepatology-intelligence",
-    # Strategic Intelligence
     "/orchestrator/research-opportunity",
     "/orchestrator/precision-hepatology",
     "/orchestrator/future-methodology",
-}
 
+    # =====================
+    # Trial Planning
+    # =====================
+
+    "/orchestrator/study-concept",
+    "/orchestrator/feasibility-analysis",
+    "/orchestrator/budget-estimation",
+
+    # =====================
+    # Protocol Generation
+    # =====================
+
+    "/protocol/endpoints",
+
+    # =====================
+    # Operations
+    # =====================
+
+    "/orchestrator/clinicaltrialsgov-package-v2",
+    "/orchestrator/crf-builder",
+    "/orchestrator/redcap-builder-v3",
+}
 
 # =========================
 # Root Endpoint
