@@ -378,11 +378,27 @@ class DesignSelectionRequest(BaseModel):
 
     research_question: str
 
+# =========================
+# Design Architecture Engine
+# =========================
+
+class DesignArchitectureRequest(BaseModel):
+
+    research_question: str
+
 class DesignSelectionResponse(BaseModel):
 
     research_question: str
 
     options: list = []
+
+    recommendation: str | None = None
+
+class DesignArchitectureResponse(BaseModel):
+
+    research_question: str
+
+    architecture_options: list = []
 
     recommendation: str | None = None
 
@@ -2676,6 +2692,139 @@ def design_selection(
             req.research_question,
 
         options=
+            options,
+
+        recommendation=
+            recommendation
+    )
+
+# =========================
+# Design Architecture Engine
+# =========================
+
+@app.post(
+    "/orchestrator/design-architecture",
+    response_model=DesignArchitectureResponse
+)
+def design_architecture(
+    req: DesignArchitectureRequest
+):
+
+    options = [
+
+        {
+            "architecture":
+                "Parallel-group RCT",
+
+            "why_use":
+                "Strong causal inference",
+
+            "why_not":
+                "Higher cost and longer recruitment",
+
+            "operational_complexity":
+                "moderate",
+
+            "statistical_complexity":
+                "moderate",
+
+            "publication_potential":
+                "high"
+        },
+
+        {
+            "architecture":
+                "Adaptive Trial",
+
+            "why_use":
+                "Efficient use of resources",
+
+            "why_not":
+                "Requires complex planning",
+
+            "operational_complexity":
+                "high",
+
+            "statistical_complexity":
+                "high",
+
+            "publication_potential":
+                "very high"
+        },
+
+        {
+            "architecture":
+                "Platform Trial",
+
+            "why_use":
+                "Multiple interventions evaluated simultaneously",
+
+            "why_not":
+                "Substantial infrastructure required",
+
+            "operational_complexity":
+                "very high",
+
+            "statistical_complexity":
+                "very high",
+
+            "publication_potential":
+                "very high"
+        },
+
+        {
+            "architecture":
+                "Cluster RCT",
+
+            "why_use":
+                "Useful when individual randomization is difficult",
+
+            "why_not":
+                "Requires ICC adjustment",
+
+            "operational_complexity":
+                "high",
+
+            "statistical_complexity":
+                "high",
+
+            "publication_potential":
+                "high"
+        },
+
+        {
+            "architecture":
+                "Stepped Wedge Trial",
+
+            "why_use":
+                "Facilitates phased implementation",
+
+            "why_not":
+                "Complex analysis",
+
+            "operational_complexity":
+                "high",
+
+            "statistical_complexity":
+                "high",
+
+            "publication_potential":
+                "high"
+        }
+    ]
+
+    recommendation = (
+        "Parallel-group RCT remains the default architecture. "
+        "Adaptive and platform designs should be considered when "
+        "multiple interventions or efficiency gains are priorities."
+    )
+
+    return DesignArchitectureResponse(
+
+        research_question=
+            req.research_question,
+
+        architecture_options=
             options,
 
         recommendation=
