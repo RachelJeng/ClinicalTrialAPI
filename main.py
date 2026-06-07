@@ -205,11 +205,6 @@ def root():
     }
 
 
-@app.get("/debug-server")
-def debug_server():
-    return {
-        "server_url": SERVER_URL
-    }
 
 @app.get("/health", tags=["System"])
 def health():
