@@ -2987,17 +2987,54 @@ def disease_knowledge(
     req: DiseaseKnowledgeRequest
 ):
 
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return DiseaseKnowledgeResponse(
+            disease=req.disease,
+            common_endpoints=[
+                "HBsAg Loss",
+                "Functional Cure",
+                "Clinical Relapse",
+                "Virological Relapse"
+            ],
+            common_designs=[
+                "Single Arm",
+                "RCT",
+                "Target Trial Emulation"
+            ],
+            common_analysis_methods=[
+                "Logistic Regression",
+                "Cox Regression",
+                "Competing Risk"
+            ],
+            common_biases=[
+                "Restart-treatment Bias",
+                "Informative Censoring"
+            ],
+            key_trials=[
+                "FINITE",
+                "HBV-STOP",
+                "Nuc-STOP"
+            ],
+            publication_considerations=[
+                "Functional cure remains a high-impact endpoint.",
+                "Time-to-HBsAg loss may improve publication value."
+            ]
+        )
+
     return DiseaseKnowledgeResponse(
         disease=req.disease,
-        common_endpoints=["test"],
-        common_designs=["test"],
-        common_analysis_methods=["test"],
-        common_biases=["test"],
-        key_trials=["test"],
-        publication_considerations=["test"]
+        common_endpoints=[],
+        common_designs=[],
+        common_analysis_methods=[],
+        common_biases=[],
+        key_trials=[],
+        publication_considerations=[]
     )
 
-    
+  
 @app.post(
     "/orchestrator/assumption-analysis",
     response_model=AssumptionAnalysisResponse
