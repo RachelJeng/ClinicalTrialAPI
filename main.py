@@ -1559,10 +1559,12 @@ def generate_estimand(
         "estimand_text": estimand_text
     }
 
-@app.post("/sap/statistical-analysis-plan")
+@app.post("/sap/statistical-analysis-plan",
+          tags=["Statistical Analysis Plan"]
+)
 def generate_sap(
     req: SAPRequest
-    tags=["Statistical Analysis Plan"]
+
 ):
 
     endpoint_type = req.endpoint_type.lower()
