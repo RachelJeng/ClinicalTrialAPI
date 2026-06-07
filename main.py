@@ -3159,6 +3159,459 @@ def hepatology_intelligence(
             ]
         )
 
+    # =========================
+    # MASLD / MASH
+    # =========================
+
+    elif disease in ["masld", "mash"]:
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Fibrosis Improvement",
+                "MASH Resolution",
+                "Histology-free Endpoints"
+            ],
+
+            preferred_endpoints=[
+                "Fibrosis Improvement",
+                "MASH Resolution",
+                "MRI-PDFF",
+                "ELF Score"
+            ],
+
+            preferred_architectures=[
+                "Adaptive Trial",
+                "Adaptive Enrichment",
+                "Master Protocol"
+            ],
+
+            preferred_statistics=[
+                "Bayesian Adaptive Design",
+                "Joint Models",
+                "Adaptive Re-estimation"
+            ],
+
+            sample_size_considerations=[
+                "Fibrosis response rate",
+                "Biopsy attrition rate"
+            ],
+
+            interim_analysis_considerations=[
+                "DSMB",
+                "Futility Assessment"
+            ],
+
+            tte_considerations=[
+                "IPTW",
+                "MSM"
+            ],
+
+            emerging_biomarkers=[
+                "ELF",
+                "PRO-C3",
+                "AI Pathology"
+            ],
+
+            emerging_therapeutics=[
+                "THR-beta Agonists",
+                "GLP-1",
+                "Combination Therapy"
+            ],
+
+            precision_hepatology=[
+                "Risk Enrichment",
+                "Fibrosis Stratification"
+            ],
+
+            reviewer_attack_points=[
+                "Missing Histology",
+                "Biopsy Attrition"
+            ],
+
+            publication_opportunities=[
+                "Histology-free Endpoints",
+                "Combination Therapy"
+            ]
+        )
+
+    # =========================
+    # HCC
+    # =========================
+
+    elif disease == "hcc":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Recurrence Prevention",
+                "Advanced HCC",
+                "Immunotherapy Sequencing"
+            ],
+
+            preferred_endpoints=[
+                "Overall Survival",
+                "Progression-Free Survival",
+                "Recurrence-Free Survival"
+            ],
+
+            preferred_architectures=[
+                "Platform Trial",
+                "Adaptive Trial",
+                "Master Protocol"
+            ],
+
+            preferred_statistics=[
+                "Competing Risk",
+                "Multi-state Models",
+                "Joint Frailty Models"
+            ],
+
+            sample_size_considerations=[
+                "Event Rate",
+                "Overall Survival"
+            ],
+
+            interim_analysis_considerations=[
+                "Event-driven Monitoring",
+                "DSMB"
+            ],
+
+            tte_considerations=[
+                "IPTW",
+                "CCW"
+            ],
+
+            emerging_biomarkers=[
+                "ctDNA",
+                "MRD"
+            ],
+
+            emerging_therapeutics=[
+                "IO+IO",
+                "IO+TKI"
+            ],
+
+            precision_hepatology=[
+                "ctDNA-guided Therapy"
+            ],
+
+            reviewer_attack_points=[
+                "Post-progression Therapy",
+                "Competing Risk"
+            ],
+
+            publication_opportunities=[
+                "ctDNA-guided Strategies",
+                "Platform Trials"
+            ]
+        )
+
+    # =========================
+    # CIRRHOSIS
+    # =========================
+
+    elif disease == "cirrhosis":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Decompensation Prevention",
+                "ACLF Prevention"
+            ],
+
+            preferred_endpoints=[
+                "Decompensation",
+                "Transplant-free Survival",
+                "Overall Survival"
+            ],
+
+            preferred_architectures=[
+                "Event-driven RCT"
+            ],
+
+            preferred_statistics=[
+                "Competing Risk",
+                "Multi-state Models"
+            ],
+
+            sample_size_considerations=[
+                "Decompensation Rate"
+            ],
+
+            interim_analysis_considerations=[
+                "Event-driven DSMB"
+            ],
+
+            tte_considerations=[
+                "IPTW"
+            ],
+
+            emerging_biomarkers=[
+                "Frailty Metrics"
+            ],
+
+            emerging_therapeutics=[
+                "Disease-modifying Strategies"
+            ],
+
+            precision_hepatology=[
+                "Risk Stratification"
+            ],
+
+            reviewer_attack_points=[
+                "Competing Risk",
+                "Informative Censoring"
+            ],
+
+            publication_opportunities=[
+                "Decompensation Prevention"
+            ]
+        )
+
+    # =========================
+    # PORTAL HYPERTENSION
+    # =========================
+
+    elif disease == "portal hypertension":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "HVPG Reduction",
+                "Variceal Bleeding Prevention"
+            ],
+
+            preferred_endpoints=[
+                "HVPG",
+                "Variceal Bleeding",
+                "Decompensation"
+            ],
+
+            preferred_architectures=[
+                "RCT"
+            ],
+
+            preferred_statistics=[
+                "Competing Risk"
+            ],
+
+            sample_size_considerations=[
+                "Bleeding Event Rate"
+            ],
+
+            interim_analysis_considerations=[
+                "Safety Monitoring"
+            ],
+
+            tte_considerations=[
+                "IPTW"
+            ],
+
+            emerging_biomarkers=[
+                "Non-invasive Portal Pressure Markers"
+            ],
+
+            emerging_therapeutics=[
+                "Portal Pressure Modulators"
+            ],
+
+            precision_hepatology=[
+                "HVPG-guided Therapy"
+            ],
+
+            reviewer_attack_points=[
+                "Death as Competing Risk",
+                "Transplant as Competing Risk"
+            ],
+
+            publication_opportunities=[
+                "HVPG-guided Strategies"
+            ]
+        )
+
+    # =========================
+    # PBC
+    # =========================
+
+    elif disease == "pbc":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Biochemical Response",
+                "Long-term Outcomes"
+            ],
+
+            preferred_endpoints=[
+                "ALP",
+                "Bilirubin"
+            ],
+
+            preferred_architectures=[
+                "Parallel-group RCT"
+            ],
+
+            preferred_statistics=[
+                "ANCOVA"
+            ],
+
+            sample_size_considerations=[
+                "ALP Response Rate"
+            ],
+
+            interim_analysis_considerations=[
+                "DSMB"
+            ],
+
+            tte_considerations=[],
+
+            emerging_biomarkers=[
+                "ELF"
+            ],
+
+            emerging_therapeutics=[
+                "FXR Agonists",
+                "PPAR Agonists"
+            ],
+
+            precision_hepatology=[],
+
+            reviewer_attack_points=[
+                "Surrogate Endpoint Validity"
+            ],
+
+            publication_opportunities=[
+                "Long-term Outcome Studies"
+            ]
+        )
+
+    # =========================
+    # AIH
+    # =========================
+
+    elif disease == "aih":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Remission",
+                "Relapse Prevention"
+            ],
+
+            preferred_endpoints=[
+                "Biochemical Remission",
+                "Histologic Remission"
+            ],
+
+            preferred_architectures=[
+                "Registry",
+                "Pragmatic Trial"
+            ],
+
+            preferred_statistics=[
+                "Bayesian Design"
+            ],
+
+            sample_size_considerations=[
+                "Rare Disease Recruitment"
+            ],
+
+            interim_analysis_considerations=[],
+
+            tte_considerations=[],
+
+            emerging_biomarkers=[
+                "Immune Signatures"
+            ],
+
+            emerging_therapeutics=[
+                "Steroid-sparing Strategies"
+            ],
+
+            precision_hepatology=[],
+
+            reviewer_attack_points=[
+                "Small Sample Size"
+            ],
+
+            publication_opportunities=[
+                "Rare Disease Methodology"
+            ]
+        )
+
+    # =========================
+    # ALD
+    # =========================
+
+    elif disease == "ald":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Alcoholic Hepatitis",
+                "Abstinence Intervention"
+            ],
+
+            preferred_endpoints=[
+                "Overall Survival",
+                "Liver-related Outcomes"
+            ],
+
+            preferred_architectures=[
+                "Pragmatic Trial"
+            ],
+
+            preferred_statistics=[
+                "Competing Risk"
+            ],
+
+            sample_size_considerations=[
+                "Survival Event Rate"
+            ],
+
+            interim_analysis_considerations=[
+                "Safety Monitoring"
+            ],
+
+            tte_considerations=[
+                "IPTW"
+            ],
+
+            emerging_biomarkers=[
+                "Alcohol Use Biomarkers"
+            ],
+
+            emerging_therapeutics=[
+                "Anti-inflammatory Strategies"
+            ],
+
+            precision_hepatology=[],
+
+            reviewer_attack_points=[
+                "Adherence Bias",
+                "Survivor Bias"
+            ],
+
+            publication_opportunities=[
+                "Alcohol Abstinence Strategies"
+            ]
+        )
+
     return HepatologyIntelligenceResponse(
 
         disease=req.disease,
