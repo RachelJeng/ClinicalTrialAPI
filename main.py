@@ -887,17 +887,18 @@ class DiseaseKnowledgeResponse(BaseModel):
 
     disease: str
 
-    common_endpoints: list[str] = []
+    common_endpoints: list
 
-    common_designs: list[str] = []
+    common_designs: list
 
-    common_analysis_methods: list[str] = []
+    common_analysis_methods: list
 
-    common_biases: list[str] = []
+    common_biases: list
 
-    key_trials: list[str] = []
+    key_trials: list
 
-    publication_considerations: list[str] = []
+    publication_considerations: list
+
 
 # =========================
 # Root Endpoint
@@ -2976,10 +2977,7 @@ def advanced_statistical_design(
         recommendation=
             recommendation
     )
-"""
-# =========================
-# Disease Knowledge Engine
-# =========================
+
 
 @app.post(
     "/orchestrator/disease-knowledge",
@@ -2989,113 +2987,16 @@ def disease_knowledge(
     req: DiseaseKnowledgeRequest
 ):
 
-    disease = req.disease.lower()
-
-    endpoints = []
-
-    designs = []
-
-    analyses = []
-
-    biases = []
-
-    trials = []
-
-    publication = []
-
-    # -------------------------
-    # HBV
-    # -------------------------
-
-    if disease == "hbv":
-
-        endpoints = [
-            "HBsAg Loss",
-            "Functional Cure",
-            "Clinical Relapse",
-            "Virological Relapse"
-        ]
-
-        designs = [
-            "Single Arm",
-            "RCT",
-            "Target Trial Emulation"
-        ]
-
-        analyses = [
-            "Logistic Regression",
-            "Cox Regression",
-            "Competing Risk"
-        ]
-
-        biases = [
-            "Restart-treatment Bias",
-            "Informative Censoring"
-        ]
-
-        trials = [
-            "FINITE",
-            "HBV-STOP",
-            "Nuc-STOP"
-        ]
-
-        publication = [
-            "Functional cure remains a high-impact endpoint.",
-            "Time-to-HBsAg loss may improve publication value."
-        ]
-
-    # -------------------------
-    # MASLD
-    # -------------------------
-
-    elif disease == "masld":
-
-        endpoints = [
-            "Fibrosis Improvement",
-            "MASH Resolution",
-            "MRI-PDFF"
-        ]
-
-        designs = [
-            "Parallel-group RCT",
-            "Adaptive Trial"
-        ]
-
-        analyses = [
-            "Logistic Regression",
-            "ANCOVA"
-        ]
-
-        biases = [
-            "Missing Biopsy Data"
-        ]
-
-        trials = [
-            "ESSENCE",
-            "SYMMETRY"
-        ]
-
-        publication = [
-            "Histology endpoints remain highly influential."
-        ]
-
     return DiseaseKnowledgeResponse(
-
         disease=req.disease,
-
-        common_endpoints=endpoints,
-
-        common_designs=designs,
-
-        common_analysis_methods=analyses,
-
-        common_biases=biases,
-
-        key_trials=trials,
-
-        publication_considerations=publication
+        common_endpoints=["test"],
+        common_designs=["test"],
+        common_analysis_methods=["test"],
+        common_biases=["test"],
+        key_trials=["test"],
+        publication_considerations=["test"]
     )
-"""
+
     
 @app.post(
     "/orchestrator/assumption-analysis",
