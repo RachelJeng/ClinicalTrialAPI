@@ -938,6 +938,38 @@ class HepatologyIntelligenceResponse(BaseModel):
 
 
 # =========================
+# Hepatology Intelligence Update Engine
+# =========================
+
+class IntelligenceUpdateRequest(BaseModel):
+
+    disease: str
+
+    update_domain: str = "all"
+
+
+class IntelligenceUpdateResponse(BaseModel):
+
+    disease: str
+
+    update_domain: str
+
+    intelligence_sources: list
+
+    new_biomarkers: list
+
+    new_therapeutics: list
+
+    new_trial_designs: list
+
+    new_statistical_methods: list
+
+    publication_relevance: list
+
+    potential_impact: list
+
+
+# =========================
 # Root Endpoint
 # =========================
 
@@ -3639,6 +3671,93 @@ def hepatology_intelligence(
         reviewer_attack_points=[],
 
         publication_opportunities=[]
+    )
+
+# =========================
+# Hepatology Intelligence Update Engine
+# =========================
+
+@app.post(
+    "/orchestrator/hepatology-intelligence-update",
+    response_model=IntelligenceUpdateResponse
+)
+def hepatology_intelligence_update(
+    req: IntelligenceUpdateRequest
+):
+
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return IntelligenceUpdateResponse(
+
+            disease=req.disease,
+
+            update_domain=req.update_domain,
+
+            intelligence_sources=[
+                "PubMed",
+                "ClinicalTrials.gov",
+                "AASLD",
+                "EASL",
+                "APASL",
+                "International HBV Meeting",
+                "ICE-HBV"
+            ],
+
+            new_biomarkers=[
+                "HBV RNA",
+                "HBcrAg",
+                "Immune Profiling"
+            ],
+
+            new_therapeutics=[
+                "siRNA",
+                "ASO",
+                "Capsid Assembly Modulators",
+                "Therapeutic Vaccines"
+            ],
+
+            new_trial_designs=[
+                "Biomarker-guided Stopping",
+                "Adaptive Enrichment"
+            ],
+
+            new_statistical_methods=[
+                "Joint Models",
+                "Dynamic Treatment Regimes"
+            ],
+
+            publication_relevance=[
+                "Functional Cure",
+                "Biomarker-guided Withdrawal"
+            ],
+
+            potential_impact=[
+                "May redefine stopping criteria",
+                "May improve functional cure prediction"
+            ]
+        )
+
+    return IntelligenceUpdateResponse(
+
+        disease=req.disease,
+
+        update_domain=req.update_domain,
+
+        intelligence_sources=[],
+
+        new_biomarkers=[],
+
+        new_therapeutics=[],
+
+        new_trial_designs=[],
+
+        new_statistical_methods=[],
+
+        publication_relevance=[],
+
+        potential_impact=[]
     )
 
 @app.post(
