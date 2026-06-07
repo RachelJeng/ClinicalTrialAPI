@@ -198,6 +198,18 @@ ADVANCED_GPT_SURFACE_PATHS = {
 def root():
     return {"message": "Rachel Clinical Trial API"}
 
+@app.get("/")
+def root():
+    return {
+        "message": "Rachel Clinical Trial API"
+    }
+
+
+@app.get("/debug-server")
+def debug_server():
+    return {
+        "server_url": SERVER_URL
+    }
 
 @app.get("/health", tags=["System"])
 def health():
