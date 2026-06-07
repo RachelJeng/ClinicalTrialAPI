@@ -901,6 +901,43 @@ class DiseaseKnowledgeResponse(BaseModel):
 
 
 # =========================
+# Hepatology Trial Intelligence
+# =========================
+
+class HepatologyIntelligenceRequest(BaseModel):
+
+    disease: str
+
+class HepatologyIntelligenceResponse(BaseModel):
+
+    disease: str
+
+    clinical_questions: list
+
+    preferred_endpoints: list
+
+    preferred_architectures: list
+
+    preferred_statistics: list
+
+    sample_size_considerations: list
+
+    interim_analysis_considerations: list
+
+    tte_considerations: list
+
+    emerging_biomarkers: list
+
+    emerging_therapeutics: list
+
+    precision_hepatology: list
+
+    reviewer_attack_points: list
+
+    publication_opportunities: list
+
+
+# =========================
 # Root Endpoint
 # =========================
 
@@ -3034,7 +3071,123 @@ def disease_knowledge(
         publication_considerations=[]
     )
 
-  
+@app.post(
+    "/orchestrator/hepatology-intelligence",
+    response_model=HepatologyIntelligenceResponse
+)
+def hepatology_intelligence(
+    req: HepatologyIntelligenceRequest
+):
+
+    disease = req.disease.lower()
+
+    if disease == "hbv":
+
+        return HepatologyIntelligenceResponse(
+
+            disease=req.disease,
+
+            clinical_questions=[
+                "Functional Cure",
+                "Finite Therapy",
+                "Relapse Prediction",
+                "Biomarker-guided Stopping"
+            ],
+
+            preferred_endpoints=[
+                "HBsAg Loss",
+                "Functional Cure",
+                "Time-to-HBsAg Loss"
+            ],
+
+            preferred_architectures=[
+                "Adaptive Trial",
+                "Biomarker-guided Trial",
+                "Target Trial Emulation"
+            ],
+
+            preferred_statistics=[
+                "Competing Risk",
+                "Joint Models",
+                "Dynamic Treatment Regimes"
+            ],
+
+            sample_size_considerations=[
+                "Functional cure rate",
+                "Relapse rate",
+                "Dropout rate"
+            ],
+
+            interim_analysis_considerations=[
+                "DSMB",
+                "Event-driven monitoring"
+            ],
+
+            tte_considerations=[
+                "IPTW",
+                "MSM",
+                "CCW"
+            ],
+
+            emerging_biomarkers=[
+                "HBcrAg",
+                "HBV RNA",
+                "qHBsAg"
+            ],
+
+            emerging_therapeutics=[
+                "siRNA",
+                "ASO",
+                "CAM",
+                "Therapeutic Vaccine"
+            ],
+
+            precision_hepatology=[
+                "Biomarker-guided stopping",
+                "Relapse prediction"
+            ],
+
+            reviewer_attack_points=[
+                "Restart-treatment bias",
+                "Informative censoring",
+                "Immortal time bias"
+            ],
+
+            publication_opportunities=[
+                "Functional cure",
+                "Biomarker-guided withdrawal"
+            ]
+        )
+
+    return HepatologyIntelligenceResponse(
+
+        disease=req.disease,
+
+        clinical_questions=[],
+
+        preferred_endpoints=[],
+
+        preferred_architectures=[],
+
+        preferred_statistics=[],
+
+        sample_size_considerations=[],
+
+        interim_analysis_considerations=[],
+
+        tte_considerations=[],
+
+        emerging_biomarkers=[],
+
+        emerging_therapeutics=[],
+
+        precision_hepatology=[],
+
+        reviewer_attack_points=[],
+
+        publication_opportunities=[]
+    )
+
 @app.post(
     "/orchestrator/assumption-analysis",
     response_model=AssumptionAnalysisResponse
