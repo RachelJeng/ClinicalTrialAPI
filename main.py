@@ -57,7 +57,6 @@ def custom_openapi():
         routes=app.routes,
         servers=app.servers,
     )
-    schema["openapi"] = "3.0.3"
     app.openapi_schema = schema
     return schema
 
