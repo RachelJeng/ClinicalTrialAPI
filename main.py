@@ -301,14 +301,10 @@ def _fill_empty_schemas(schema: dict) -> dict:
                          .get("application/json", {}))
             if content.get("schema") == {}:
                 content["schema"] = {
-                       "type": "object",
-                       "properties": {
-                           "result": {
-                               "type": "object",
-                               "additionalProperties": True,
-                           }
-                       },
-                   }
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": True,
+                }
     return schema
 
 @app.get("/openapi-gpt-advanced.json", include_in_schema=False)
