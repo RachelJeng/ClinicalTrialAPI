@@ -35,6 +35,8 @@ SERVER_URL = os.getenv(
     "https://clinicaltrialapi-dqml.onrender.com"
 )
 
+from fastapi.openapi.utils import get_openapi
+
 app = FastAPI(
     title="Rachel Hepatology Research OS",
     version=API_VERSION,
@@ -44,6 +46,23 @@ app = FastAPI(
         }
     ],
 )
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        routes=app.routes,
+        servers=app.servers,
+    )
+    schema["openapi"] = "3.0.3"
+    app.openapi_schema = schema
+    return schema
+
+
+app.openapi = custom_openapi
 
 # =========================
 # Router Assembly
