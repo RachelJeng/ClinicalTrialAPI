@@ -272,7 +272,36 @@ def openapi_gpt():
     gpt_schema["info"] = dict(full_schema.get("info", {}))
     gpt_schema["info"]["title"] = "Hepatology Research OS (GPT Surface)"
 
+    _fill_empty_schemas(gpt_schema)
+
     return JSONResponse(gpt_schema)
+
+
+def _fill_empty_schemas(schema: dict) -> dict:
+    """只在送給 GPT 的 schema 上補空殼;後端 model 與回傳完全不動。"""
+    def fix(obj):
+        if isinstance(obj, dict):
+            if obj.get("type") == "array" and obj.get("items") == {}:
+                obj["items"] = {"type": "string"}
+            for v in obj.values():
+                fix(v)
+        elif isinstance(obj, list):
+            for v in obj:
+                fix(v)
+
+    fix(schema.get("components", {}))
+
+    for path_item in schema.get("paths", {}).values():
+        for op in path_item.values():
+            if not isinstance(op, dict):
+                continue
+            content = (op.get("responses", {})
+                         .get("200", {})
+                         .get("content", {})
+                         .get("application/json", {}))
+            if content.get("schema") == {}:
+                content["schema"] = {"type": "object", "additionalProperties": True}
+    return schema
 
 @app.get("/openapi-gpt-advanced.json", include_in_schema=False)
 def openapi_gpt_advanced():
